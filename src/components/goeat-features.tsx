@@ -155,6 +155,24 @@ export function GoEatFeaturesPage() {
                         className="block aspect-video w-full object-cover object-center"
                       />
                     </div>
+                    {"extra" in m &&
+                      m.extra.map((x) => (
+                        <figure key={x.src} className="mt-5">
+                          <div className="overflow-hidden rounded-xl border border-[#D6DCE6] sysdark:border-[#262B33] bg-white sysdark:bg-[#111317] shadow-[0_16px_32px_-20px_rgba(11,18,32,0.24)] sysdark:shadow-[0_16px_32px_-20px_rgba(0,0,0,0.28)]">
+                            <Image
+                              src={x.src}
+                              alt={x.alt}
+                              width={1280}
+                              height={720}
+                              sizes="(min-width: 1024px) 640px, 100vw"
+                              className="block aspect-video w-full object-cover object-center"
+                            />
+                          </div>
+                          <figcaption className="mt-2 text-[13px] text-[#5B6475] sysdark:text-[#8B93A3]">
+                            {x.caption}
+                          </figcaption>
+                        </figure>
+                      ))}
                   </div>
                 </div>
               </section>

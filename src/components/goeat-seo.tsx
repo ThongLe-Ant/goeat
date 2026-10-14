@@ -19,7 +19,7 @@ export const TRY_DEMO_PATH = "/dung-thu"
 const abs = (path: string) => `${SITE_URL}${path}`
 
 const OG_IMAGE = {
-  url: "/images/goeat-dat-mon-ca-tuan.jpg",
+  url: "/images/goeat-dat-mon-ca-tuan-v2.jpg",
   alt: "Màn hình GoEat: chọn ca và món ăn cho cả tuần",
 }
 

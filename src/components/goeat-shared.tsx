@@ -302,8 +302,8 @@ export const FEATURE_MODULES = [
     ],
     example:
       "Ca 1 chốt trước 2 ngày lúc 10:30 — sáng thứ Hai là món thứ Tư đã khoá, chỉ xem được.",
-    src: "/images/goeat-dat-mon-ca-tuan.jpg",
-    alt: "Màn hình công nhân chọn ca và món cho cả tuần",
+    src: "/images/goeat-dat-mon-ca-tuan-v2.jpg",
+    alt: "Màn hình đặt món tuần sau trên máy tính và điện thoại: mỗi ngày chọn ca, chọn món chính hoặc đổi sang món thay thế, món chay",
   },
   {
     id: "bao-bep",
@@ -315,7 +315,7 @@ export const FEATURE_MODULES = [
     text: "Tới giờ chốt, phần mềm tự cộng số suất của từng ca, tách riêng từng món. Bếp không phải đếm tay.",
     points: [
       { t: "Số nấu theo ca", d: "Tổng riêng cho Ca 1, Ca 2, Ca 3." },
-      { t: "Tách theo món", d: "Mặn, chay, món nước tính riêng." },
+      { t: "Tách theo món", d: "Mặn, chay, món thay thế tính riêng." },
       {
         t: "Số đã báo không đổi",
         d: "Người huỷ muộn không làm thay đổi số bếp đã nhận.",
@@ -324,8 +324,8 @@ export const FEATURE_MODULES = [
     ],
     example:
       "Chốt Ca 2 xong, tổ bảo trì báo thêm 6 người tăng ca — nhập phát sinh, quầy và báo cáo tự cộng thêm 6 suất.",
-    src: "/images/goeat-bao-bep-ca.jpg",
-    alt: "Màn hình báo số nấu cho bếp theo từng ca",
+    src: "/images/goeat-bao-bep-ca-v2.jpg",
+    alt: "Báo cáo theo ngày: số cần nấu của Ca 1, Ca 2, Ca 3 tách mặn, chay, thay thế, kèm số đã phát và chưa nhận",
   },
   {
     id: "nhan-mon",
@@ -343,8 +343,15 @@ export const FEATURE_MODULES = [
     ],
     example:
       "Thẻ đã nhận lúc 11:19 quẹt lại lúc 11:41 → màn hình báo “đã nhận lúc 11:19”, không phát thêm.",
-    src: "/images/goeat-nhan-mon-quay.jpg",
-    alt: "Màn hình quầy hiện tên người và món sau khi quẹt thẻ",
+    src: "/images/goeat-nhan-mon-quay-v2.jpg",
+    alt: "Màn hình nhận món sau khi quẹt thẻ: tên món chữ to, tên người nhận, số đã nhận và còn lại của ca",
+    extra: [
+      {
+        src: "/images/goeat-quay-nhan-mon.jpg",
+        alt: "Máy tính bảng và máy scan thẻ đặt tại quầy phát cơm",
+        caption: "Lắp đặt thực tế tại quầy",
+      },
+    ],
   },
   {
     id: "ngoai-le",
@@ -368,8 +375,15 @@ export const FEATURE_MODULES = [
     ],
     example:
       "Công nhân quên thẻ: quầy cấp thẻ tạm số 09, nhận cơm như thẻ thật, lượt phát ghi lý do “quên thẻ”.",
-    src: "/images/goeat-quay-nhan-mon.jpg",
-    alt: "Quầy phát cơm thực tế tại nhà máy",
+    src: "/images/goeat-phat-ngoai-le.jpg",
+    alt: "Màn hình phát suất ngoại lệ: chọn lý do, chọn món và lịch sử phát ngoại lệ trong ngày",
+    extra: [
+      {
+        src: "/images/goeat-the-tam.jpg",
+        alt: "Màn hình cấp thẻ tạm: nhận diện nhân viên rồi chạm thẻ tạm vào đầu đọc",
+        caption: "Cấp thẻ tạm cho người quên thẻ",
+      },
+    ],
   },
   {
     id: "can-tin",
@@ -391,8 +405,15 @@ export const FEATURE_MODULES = [
     ],
     example:
       "Hôm trước đặt 1 bánh giò 15.000đ, chọn giờ nhận 07:30, quét QR trả tiền; sáng hôm sau ra quầy căn-tin nhận.",
-    src: "/images/goeat-can-tin-dat.jpg",
-    alt: "Cửa hàng căn-tin nội bộ đặt trước đồ ăn thêm, nước uống",
+    src: "/images/goeat-can-tin-dat-v2.jpg",
+    alt: "Cửa hàng căn-tin: chọn ngày nhận, chọn món, giỏ hàng và giờ nhận món",
+    extra: [
+      {
+        src: "/images/goeat-can-tin-qr.jpg",
+        alt: "Hộp thanh toán mã QR: số tiền, số tài khoản, nội dung chuyển khoản và thời gian còn lại",
+        caption: "Thanh toán bằng mã QR ngân hàng",
+      },
+    ],
   },
   {
     id: "doi-soat",
@@ -413,8 +434,8 @@ export const FEATURE_MODULES = [
     ],
     example:
       "Ngày 15 lệch 3 suất giữa số bếp và số nhận → mở ra thấy đủ 3 lượt phát tay kèm lý do và giờ phát.",
-    src: "/images/goeat-doi-soat-ky.jpg",
-    alt: "Bảng đối soát suất ăn cuối kỳ có nút xuất Excel",
+    src: "/images/goeat-doi-soat-ky-v2.jpg",
+    alt: "Bảng đối soát suất ăn theo ngày và ca: tổng đăng ký, đã nhận, không ai nhận, kèm nút xuất Excel",
   },
 ] as const
 
