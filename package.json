@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "description": "Trang giới thiệu sản phẩm GoEat (goeat.vn)",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "dev": "next dev -p 3040",
     "build": "next build",

@@ -46,14 +46,20 @@ function apply(choice: ThemeChoice) {
   else root.dataset.goeatTheme = choice
 }
 
-export function GoEatThemeToggle({ className = "" }: { className?: string }) {
+/** `className` quyết định cả cách hiển thị (mặc định `inline-flex`): để
+ * `hidden md:inline-flex` ẩn được trên điện thoại, khung không tự đặt display. */
+export function GoEatThemeToggle({
+  className = "inline-flex",
+}: {
+  className?: string
+}) {
   const current = useSyncExternalStore(subscribe, read, () => "system")
 
   return (
     <div
       role="radiogroup"
       aria-label="Giao diện"
-      className={`inline-flex items-center gap-0.5 rounded-full border border-[#E3E7EE] p-0.5 sysdark:border-[#262B33] ${className}`}
+      className={`sysdark:border-[#262B33] items-center gap-0.5 rounded-full border border-[#E3E7EE] p-0.5 ${className}`}
     >
       {OPTIONS.map(({ value, label, icon: Icon }) => {
         const on = current === value
@@ -68,8 +74,8 @@ export function GoEatThemeToggle({ className = "" }: { className?: string }) {
             onClick={() => apply(value)}
             className={`inline-flex h-7 w-7 items-center justify-center rounded-full transition-colors ${
               on
-                ? "bg-[#EAF1FF] text-[#1D4ED8] sysdark:bg-[#1F232A] sysdark:text-white"
-                : "text-[#6B7485] hover:text-[#0B1220] sysdark:text-[#8B93A3] sysdark:hover:text-white"
+                ? "sysdark:bg-[#1F232A] sysdark:text-white bg-[#EAF1FF] text-[#1D4ED8]"
+                : "sysdark:text-[#8B93A3] sysdark:hover:text-white text-[#6B7485] hover:text-[#0B1220]"
             }`}
           >
             <Icon className="h-3.5 w-3.5" />

@@ -15,10 +15,12 @@ import {
   Monitor,
   Network,
   Phone,
+  Maximize2,
   ScanLine,
   ShieldCheck,
   ShoppingBag,
   Users,
+  X,
 } from "lucide-react"
 
 import {
@@ -142,13 +144,14 @@ function ProductHero() {
   const [index, setIndex] = useState(0)
   const [paused, setPaused] = useState(false)
   const [reduceMotion, setReduceMotion] = useState(false)
+  /** Ảnh đang phóng to (điện thoại: ảnh chụp màn máy tính quá nhỏ để đọc). */
+  const [zoomed, setZoomed] = useState(false)
   const touchX = useRef<number | null>(null)
-  const tabsRef = useRef<HTMLDivElement>(null)
 
   const count = SLIDES.length
   const go = useCallback(
     (next: number) => setIndex(((next % count) + count) % count),
-    [count]
+    [count],
   )
 
   useEffect(() => {
@@ -159,7 +162,20 @@ function ProductHero() {
     return () => mq.removeEventListener("change", onChange)
   }, [])
 
-  const autoplay = !paused && !reduceMotion
+  const autoplay = !paused && !reduceMotion && !zoomed
+
+  // Khung phóng to: khoá cuộn trang phía sau, Esc để đóng.
+  useEffect(() => {
+    if (!zoomed) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = "hidden"
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setZoomed(false)
+    window.addEventListener("keydown", onKey)
+    return () => {
+      document.body.style.overflow = prev
+      window.removeEventListener("keydown", onKey)
+    }
+  }, [zoomed])
 
   useEffect(() => {
     if (!autoplay) return
@@ -167,28 +183,20 @@ function ProductHero() {
     return () => window.clearTimeout(t)
   }, [autoplay, index, go])
 
-  // Điện thoại không đủ chỗ cho cả 6 tab: cuộn dải tab theo slide đang hiện.
-  useEffect(() => {
-    const list = tabsRef.current
-    const tab = list?.children[index] as HTMLElement | undefined
-    if (!list || !tab || list.scrollWidth <= list.clientWidth) return
-    list.scrollTo({ left: tab.offsetLeft - 8, behavior: "smooth" })
-  }, [index])
-
   const active = SLIDES[index]
 
   return (
     <>
       <style>{`@keyframes goeat-slide-progress{from{transform:scaleX(0)}to{transform:scaleX(1)}}@keyframes goeat-fade-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}`}</style>
 
-      <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-12">
+      <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-12">
         {/* Chữ giới thiệu — cột trái */}
         <div className="min-w-0">
-          <p className="font-mono text-xs font-medium tracking-[0.08em] text-[#BFDBFE] uppercase sysdark:text-[#8FB8FF]">
+          <p className="sysdark:text-[#8FB8FF] font-mono text-xs font-medium tracking-[0.08em] text-[#BFDBFE] uppercase">
             Nhà máy · Cơ quan · Đơn vị thầu bếp
           </p>
           <h1
-            className="mt-3 font-medium tracking-[-0.025em] text-white [text-wrap:balance]"
+            className="mt-3 font-medium tracking-[-0.025em] [text-wrap:balance] text-white"
             style={{
               fontSize: "clamp(1.8rem, 2.6vw, 2.5rem)",
               lineHeight: 1.15,
@@ -196,13 +204,13 @@ function ProductHero() {
           >
             Phần mềm quản lý suất ăn &amp; căn-tin
           </h1>
-          <p className="mt-3 text-base text-[#EFF5FF] sysdark:text-[#A3AAB8] [text-wrap:pretty]">
+          <p className="sysdark:text-[#A3AAB8] mt-3 text-base [text-wrap:pretty] text-[#EFF5FF]">
             Chọn món, báo bếp, phát cơm, đối soát — đúng số, đủ dấu vết.
           </p>
-          <ul className="mt-5 space-y-2.5 text-sm text-[#E3EDFF] sysdark:text-[#C9CED8]">
+          <ul className="sysdark:text-[#C9CED8] mt-5 space-y-2.5 text-sm text-[#E3EDFF]">
             {HERO_POINTS.map((point) => (
               <li key={point} className="flex items-start gap-2.5">
-                <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#BFDBFE] sysdark:text-[#8FB8FF]" />
+                <Check className="sysdark:text-[#8FB8FF] mt-0.5 h-4 w-4 shrink-0 text-[#BFDBFE]" />
                 <span>{point}</span>
               </li>
             ))}
@@ -210,19 +218,19 @@ function ProductHero() {
           <div className="mt-7 flex flex-wrap items-center gap-3">
             <Link
               href={TRY_DEMO_HREF}
-              className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-[#0B2A5B] sysdark:text-[#08090B] shadow-sm transition-colors hover:bg-[#EAF1FF]"
+              className="sysdark:text-[#08090B] inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-[#0B2A5B] shadow-sm transition-colors hover:bg-[#EAF1FF]"
             >
               Dùng thử miễn phí 7 ngày
               <ArrowRight className="h-4 w-4" />
             </Link>
             <a
               href="#bang-gia"
-              className="inline-flex min-h-[44px] items-center justify-center rounded-full border border-white/40 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10 sysdark:hover:bg-white/5"
+              className="sysdark:hover:bg-white/5 inline-flex min-h-[44px] items-center justify-center rounded-full border border-white/40 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
             >
               Xem bảng giá
             </a>
           </div>
-          <p className="mt-3 text-xs text-[#BFDBFE] sysdark:text-[#8FB8FF]">
+          <p className="sysdark:text-[#8FB8FF] mt-3 text-xs text-[#BFDBFE]">
             Chỉ cần email, nhận tài khoản ngay, không cần cài đặt.
           </p>
         </div>
@@ -235,18 +243,17 @@ function ProductHero() {
           onFocusCapture={() => setPaused(true)}
           onBlurCapture={() => setPaused(false)}
         >
-          <div className="overflow-hidden rounded-xl border border-white/20 bg-white sysdark:bg-[#111317] shadow-[0_40px_80px_-30px_rgba(0,0,0,0.55)]">
-            <div className="flex items-center gap-3 border-b border-[#E3E7EE] sysdark:border-[#1F232A] bg-[#F4F6FA] sysdark:bg-[#16191E] px-3 py-2">
+          <div className="sysdark:bg-[#111317] overflow-hidden rounded-xl border border-white/20 bg-white shadow-[0_40px_80px_-30px_rgba(0,0,0,0.55)]">
+            <div className="sysdark:border-[#1F232A] sysdark:bg-[#16191E] flex items-center gap-3 border-b border-[#E3E7EE] bg-[#F4F6FA] px-3 py-2">
               <div className="hidden gap-1.5 pl-1 sm:flex">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#D3D9E2] sysdark:bg-[#343A44]" />
-                <span className="h-2.5 w-2.5 rounded-full bg-[#D3D9E2] sysdark:bg-[#343A44]" />
-                <span className="h-2.5 w-2.5 rounded-full bg-[#D3D9E2] sysdark:bg-[#343A44]" />
+                <span className="sysdark:bg-[#343A44] h-2.5 w-2.5 rounded-full bg-[#D3D9E2]" />
+                <span className="sysdark:bg-[#343A44] h-2.5 w-2.5 rounded-full bg-[#D3D9E2]" />
+                <span className="sysdark:bg-[#343A44] h-2.5 w-2.5 rounded-full bg-[#D3D9E2]" />
               </div>
               <div
-                ref={tabsRef}
                 role="tablist"
                 aria-label="Chức năng sản phẩm"
-                className="relative flex min-w-0 flex-1 snap-x gap-1 overflow-x-auto pr-8 [mask-image:linear-gradient(to_right,#000_80%,transparent)] sm:justify-center sm:pr-0 sm:[mask-image:none] [&::-webkit-scrollbar]:hidden"
+                className="relative grid min-w-0 flex-1 grid-cols-3 gap-1 sm:flex sm:justify-center"
               >
                 {SLIDES.map((s, i) => {
                   const Icon = s.icon
@@ -259,21 +266,21 @@ function ProductHero() {
                       aria-selected={isActive}
                       aria-controls="goeat-slide-panel"
                       onClick={() => go(i)}
-                      className={`relative flex shrink-0 snap-start items-center gap-1.5 overflow-hidden rounded-md px-3 py-1.5 text-[13px] font-semibold transition-colors ${
+                      className={`relative flex min-w-0 shrink-0 items-center justify-center gap-1.5 overflow-hidden rounded-md px-2 py-1.5 text-[13px] font-semibold transition-colors sm:px-3 ${
                         isActive
-                          ? "bg-white sysdark:bg-[#262B33] text-[#0B2A5B] shadow-sm sysdark:text-white sysdark:shadow-none ring-1 ring-[#D6DCE6] sysdark:ring-white/10"
-                          : "text-[#5B6475] sysdark:text-[#8B93A3] hover:bg-white/70 sysdark:hover:bg-[#111317]/5 hover:text-[#0B2A5B] sysdark:hover:text-white"
+                          ? "sysdark:bg-[#262B33] sysdark:text-white sysdark:shadow-none sysdark:ring-white/10 bg-white text-[#0B2A5B] shadow-sm ring-1 ring-[#D6DCE6]"
+                          : "sysdark:text-[#8B93A3] sysdark:hover:bg-[#111317]/5 sysdark:hover:text-white text-[#5B6475] hover:bg-white/70 hover:text-[#0B2A5B]"
                       }`}
                     >
                       <Icon
-                        className={`h-3.5 w-3.5 shrink-0 ${isActive ? "text-[#1D4ED8] sysdark:text-[#6EA8FF]" : ""}`}
+                        className={`h-3.5 w-3.5 shrink-0 ${isActive ? "sysdark:text-[#6EA8FF] text-[#1D4ED8]" : ""}`}
                       />
                       {s.tab}
                       {isActive && (
                         <span
                           key={`${index}-${autoplay}`}
                           aria-hidden
-                          className="absolute inset-x-0 bottom-0 h-[2px] origin-left bg-[#1D4ED8] sysdark:bg-[#2563EB]"
+                          className="sysdark:bg-[#2563EB] absolute inset-x-0 bottom-0 h-[2px] origin-left bg-[#1D4ED8]"
                           style={
                             autoplay
                               ? {
@@ -287,7 +294,7 @@ function ProductHero() {
                   )
                 })}
               </div>
-              <span className="tnum hidden pr-1 text-xs font-semibold text-[#8B93A3] sysdark:text-[#6B7280] sm:inline">
+              <span className="tnum sysdark:text-[#6B7280] hidden pr-1 text-xs font-semibold text-[#8B93A3] sm:inline">
                 {index + 1}/{count}
               </span>
             </div>
@@ -311,11 +318,11 @@ function ProductHero() {
               {/* Các ảnh chồng lên nhau, đổi slide bằng mờ dần thay vì trượt
                * ngang: không bị tua ngược qua cả dãy khi từ ảnh cuối về ảnh
                * đầu. Ảnh tải sẵn hết để lúc đổi không bị chớp trắng. */}
-              <div className="grid">
+              <div className="grid grid-cols-1">
                 {SLIDES.map((s, i) => (
                   <div
                     key={s.id}
-                    className={`[grid-area:1/1] transition-opacity duration-700 ease-in-out motion-reduce:transition-none ${
+                    className={`transition-opacity duration-700 ease-in-out [grid-area:1/1] motion-reduce:transition-none ${
                       i === index
                         ? "opacity-100"
                         : "pointer-events-none opacity-0"
@@ -335,13 +342,25 @@ function ProductHero() {
                   </div>
                 ))}
               </div>
+              {/* Điện thoại: chạm để mở ảnh cỡ thật, kéo ngang để xem. */}
+              <button
+                type="button"
+                onClick={() => setZoomed(true)}
+                className="absolute inset-0 flex items-end justify-end p-2 sm:hidden"
+                aria-label={`Phóng to ảnh: ${active.title}`}
+              >
+                <span className="inline-flex items-center gap-1 rounded-full bg-[#0B1220]/75 px-2.5 py-1 text-xs font-semibold text-white">
+                  <Maximize2 className="h-3.5 w-3.5" />
+                  Chạm để phóng to
+                </span>
+              </button>
             </div>
           </div>
 
           <div className="mt-4 flex flex-col gap-2 text-center sm:flex-row sm:items-center sm:justify-between sm:text-left">
             <p
               key={active.id}
-              className="text-sm text-[#E3EDFF] sysdark:text-[#C9CED8] motion-safe:animate-[goeat-fade-in_500ms_ease-out]"
+              className="sysdark:text-[#C9CED8] text-sm text-[#E3EDFF] motion-safe:animate-[goeat-fade-in_500ms_ease-out]"
             >
               <b className="font-semibold text-white">{active.title}.</b>{" "}
               {active.text}
@@ -356,6 +375,40 @@ function ProductHero() {
           </div>
         </div>
       </div>
+
+      {zoomed && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={active.title}
+          className="fixed inset-0 z-[100] flex flex-col bg-[#0B1220] sm:hidden"
+        >
+          <div className="flex items-center justify-between gap-3 px-4 py-3 text-white">
+            <p className="min-w-0 text-sm font-semibold">{active.title}</p>
+            <button
+              type="button"
+              onClick={() => setZoomed(false)}
+              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10"
+              aria-label="Đóng"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+          <div className="flex-1 overflow-auto overscroll-contain">
+            <Image
+              src={active.src}
+              alt={active.alt}
+              width={1440}
+              height={900}
+              sizes="1100px"
+              className="block h-auto w-[1100px] max-w-none bg-white"
+            />
+          </div>
+          <p className="px-4 py-3 text-center text-xs text-[#BFDBFE]">
+            Kéo ngang để xem hết màn hình
+          </p>
+        </div>
+      )}
     </>
   )
 }
@@ -367,14 +420,14 @@ export function GoEatLandingPage() {
   const [showPhone, setShowPhone] = useState(false)
 
   return (
-    <div className="min-h-dvh bg-white sysdark:bg-[#08090B] text-[#0B1220] sysdark:text-[#F5F7FA] antialiased selection:bg-[#1D4ED8] sysdark:selection:bg-[#2563EB] selection:text-white">
+    <div className="sysdark:bg-[#08090B] sysdark:text-[#F5F7FA] sysdark:selection:bg-[#2563EB] min-h-dvh bg-white text-[#0B1220] antialiased selection:bg-[#1D4ED8] selection:text-white">
       <GoEatHeader wide />
 
       <div>
         {/* ---------- Hero + slider sản phẩm (ảnh nằm ngay màn hình đầu) ---------- */}
         <section
           id="san-pham"
-          className="relative scroll-mt-20 overflow-hidden bg-[#1D4ED8] sysdark:bg-[#08090B] sysdark:bg-[radial-gradient(ellipse_70%_80%_at_85%_0%,rgba(37,99,235,0.38),transparent_70%)] pt-[100px] pb-10 lg:pt-[96px] lg:pb-12"
+          className="sysdark:bg-[#08090B] sysdark:bg-[radial-gradient(ellipse_70%_80%_at_85%_0%,rgba(37,99,235,0.38),transparent_70%)] relative scroll-mt-20 overflow-hidden bg-[#1D4ED8] pt-[100px] pb-10 lg:pt-[96px] lg:pb-12"
         >
           <CubeBackdrop />
           <div className="relative mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
@@ -389,11 +442,11 @@ export function GoEatLandingPage() {
           {/* ---------- Số liệu & dải tin cậy ---------- */}
           <section
             aria-label="Số liệu vận hành và cam kết"
-            className="relative border-y border-[#E3E7EE] sysdark:border-[#1F232A] bg-[#F7F9FC] sysdark:bg-[#0E1014] bg-[radial-gradient(#D6DCE6_1px,transparent_1px)] sysdark:bg-[radial-gradient(#1F232A_1px,transparent_1px)] [background-size:16px_16px]"
+            className="sysdark:border-[#1F232A] sysdark:bg-[#0E1014] sysdark:bg-[radial-gradient(#1F232A_1px,transparent_1px)] relative border-y border-[#E3E7EE] bg-[#F7F9FC] bg-[radial-gradient(#D6DCE6_1px,transparent_1px)] [background-size:16px_16px]"
           >
             <RailMarks />
             <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 py-8 sm:px-6 lg:grid-cols-12 lg:items-center lg:px-8">
-              <dl className="grid grid-cols-3 divide-x divide-[#D6DCE6] sysdark:divide-[#262B33] lg:col-span-5">
+              <dl className="sysdark:divide-[#262B33] grid grid-cols-3 divide-x divide-[#D6DCE6] lg:col-span-5">
                 {[
                   { v: "1,37tr", l: "suất đã phục vụ" },
                   { v: "0,5s", l: "mỗi lượt quẹt thẻ" },
@@ -401,10 +454,10 @@ export function GoEatLandingPage() {
                 ].map((s) => (
                   <div key={s.l} className="px-3 first:pl-0">
                     <dt className="sr-only">{s.l}</dt>
-                    <dd className="font-mono text-2xl font-medium tracking-tight text-[#0B1220] sysdark:text-[#F5F7FA]">
+                    <dd className="sysdark:text-[#F5F7FA] font-mono text-2xl font-medium tracking-tight text-[#0B1220]">
                       {s.v}
                     </dd>
-                    <dd className="mt-0.5 text-xs text-[#5B6475] sysdark:text-[#8B93A3]">
+                    <dd className="sysdark:text-[#8B93A3] mt-0.5 text-xs text-[#5B6475]">
                       {s.l}
                     </dd>
                   </div>
@@ -416,9 +469,9 @@ export function GoEatLandingPage() {
                   return (
                     <li
                       key={t.label}
-                      className="flex items-center gap-2.5 text-sm font-semibold text-[#1F2937] sysdark:text-[#E6E9EF]"
+                      className="sysdark:text-[#E6E9EF] flex items-center gap-2.5 text-sm font-semibold text-[#1F2937]"
                     >
-                      <Icon className="h-5 w-5 shrink-0 text-[#1D4ED8] sysdark:text-[#6EA8FF]" />
+                      <Icon className="sysdark:text-[#6EA8FF] h-5 w-5 shrink-0 text-[#1D4ED8]" />
                       {t.label}
                     </li>
                   )
@@ -431,14 +484,14 @@ export function GoEatLandingPage() {
            * Chỉ sơ lược; chi tiết từng chức năng ở trang /chuc-nang. */}
           <section
             id="chuc-nang"
-            className="relative scroll-mt-20 bg-white sysdark:bg-[#08090B] pt-16 pb-8 lg:pt-24 lg:pb-10"
+            className="sysdark:bg-[#08090B] relative scroll-mt-20 bg-white pt-16 pb-8 lg:pt-24 lg:pb-10"
           >
             <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
               <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                 <div className="max-w-2xl">
                   <Eyebrow index="01">Cách vận hành</Eyebrow>
                   <h2
-                    className="mt-2 font-medium tracking-[-0.02em] text-[#0B1220] sysdark:text-[#F5F7FA] [text-wrap:balance]"
+                    className="sysdark:text-[#F5F7FA] mt-2 font-medium tracking-[-0.02em] [text-wrap:balance] text-[#0B1220]"
                     style={HEADING_STYLE}
                   >
                     Từ lúc đặt món tới khi đối soát
@@ -446,7 +499,7 @@ export function GoEatLandingPage() {
                 </div>
                 <Link
                   href={FEATURES_HREF}
-                  className="inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-[#1D4ED8] sysdark:text-[#6EA8FF] hover:text-[#172554] sysdark:hover:text-white"
+                  className="sysdark:text-[#6EA8FF] sysdark:hover:text-white inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-[#1D4ED8] hover:text-[#172554]"
                 >
                   Xem toàn bộ chức năng
                   <ArrowRight className="h-4 w-4" />
@@ -456,7 +509,7 @@ export function GoEatLandingPage() {
               <ol className="relative mt-12 grid grid-cols-1 gap-8 md:grid-cols-5 md:gap-6">
                 <span
                   aria-hidden
-                  className="absolute top-5 right-[10%] left-[10%] hidden border-t border-dashed border-[#9DB8EC] sysdark:border-[#1E3A8A] md:block"
+                  className="sysdark:border-[#1E3A8A] absolute top-5 right-[10%] left-[10%] hidden border-t border-dashed border-[#9DB8EC] md:block"
                 />
                 {TIMELINE.map((m, i) => {
                   const Icon = m.icon
@@ -465,22 +518,22 @@ export function GoEatLandingPage() {
                       key={m.id}
                       className="relative flex gap-4 md:flex-col md:items-center md:gap-0 md:text-center"
                     >
-                      <span className="relative z-10 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#C9D8F5] sysdark:border-[#1E3A8A] bg-white sysdark:bg-[#111317] text-[#1D4ED8] sysdark:text-[#6EA8FF] shadow-[0_0_0_6px_#fff] sysdark:shadow-[0_0_0_6px_#08090B]">
+                      <span className="sysdark:border-[#1E3A8A] sysdark:bg-[#111317] sysdark:text-[#6EA8FF] sysdark:shadow-[0_0_0_6px_#08090B] relative z-10 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#C9D8F5] bg-white text-[#1D4ED8] shadow-[0_0_0_6px_#fff]">
                         <Icon className="h-[18px] w-[18px]" />
                       </span>
                       <div className="md:mt-4">
-                        <p className="font-mono text-[11px] font-medium tracking-wide text-[#6B7485] uppercase sysdark:text-[#7A8292]">
+                        <p className="sysdark:text-[#7A8292] font-mono text-[11px] font-medium tracking-wide text-[#6B7485] uppercase">
                           {String(i + 1).padStart(2, "0")} · {m.when}
                         </p>
-                        <h3 className="mt-1 text-base font-bold text-[#0B1220] sysdark:text-[#F5F7FA]">
+                        <h3 className="sysdark:text-[#F5F7FA] mt-1 text-base font-bold text-[#0B1220]">
                           <Link
                             href={`${FEATURES_HREF}#${m.id}`}
-                            className="hover:text-[#1D4ED8] sysdark:hover:text-[#6EA8FF]"
+                            className="sysdark:hover:text-[#6EA8FF] hover:text-[#1D4ED8]"
                           >
                             {m.name}
                           </Link>
                         </h3>
-                        <p className="mt-1 text-sm leading-relaxed text-[#4B5565] sysdark:text-[#A3AAB8]">
+                        <p className="sysdark:text-[#A3AAB8] mt-1 text-sm leading-relaxed text-[#4B5565]">
                           {m.brief}
                         </p>
                       </div>
@@ -489,13 +542,13 @@ export function GoEatLandingPage() {
                 })}
               </ol>
 
-              <p className="mt-12 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 border-t border-[#E3E7EE] sysdark:border-[#1F232A] pt-6 text-center text-sm text-[#4B5565] sysdark:text-[#A3AAB8]">
-                <ShoppingBag className="h-4 w-4 text-[#1D4ED8] sysdark:text-[#6EA8FF]" />
-                <b className="font-semibold text-[#0B1220] sysdark:text-[#F5F7FA]">
+              <p className="sysdark:border-[#1F232A] sysdark:text-[#A3AAB8] mt-12 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 border-t border-[#E3E7EE] pt-6 text-center text-sm text-[#4B5565]">
+                <ShoppingBag className="sysdark:text-[#6EA8FF] h-4 w-4 text-[#1D4ED8]" />
+                <b className="sysdark:text-[#F5F7FA] font-semibold text-[#0B1220]">
                   Thêm căn-tin nội bộ:
                 </b>
                 đặt trước đồ ăn thêm, trả bằng mã QR.
-                <span className="rounded-full bg-[#0B1220] sysdark:bg-[#1E3A8A] px-2 py-0.5 text-xs font-semibold text-white">
+                <span className="sysdark:bg-[#1E3A8A] rounded-full bg-[#0B1220] px-2 py-0.5 text-xs font-semibold text-white">
                   Gói Nâng cao
                 </span>
               </p>
@@ -507,14 +560,14 @@ export function GoEatLandingPage() {
           {/* ---------- Bảng giá ---------- */}
           <section
             id="bang-gia"
-            className="relative scroll-mt-24 border-t border-[#E3E7EE] py-12 lg:py-16 sysdark:border-[#1F232A]"
+            className="sysdark:border-[#1F232A] relative scroll-mt-24 border-t border-[#E3E7EE] py-12 lg:py-16"
           >
             <RailMarks />
             <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
               <div className="mx-auto max-w-2xl text-center">
                 <Eyebrow index="02">Bảng giá</Eyebrow>
                 <h2
-                  className="mt-2 font-medium tracking-[-0.02em] text-[#0B1220] sysdark:text-[#F5F7FA] [text-wrap:balance]"
+                  className="sysdark:text-[#F5F7FA] mt-2 font-medium tracking-[-0.02em] [text-wrap:balance] text-[#0B1220]"
                   style={HEADING_STYLE}
                 >
                   Chọn gói phù hợp với đơn vị bạn
@@ -531,22 +584,22 @@ export function GoEatLandingPage() {
                       key={plan.id}
                       className={`relative flex flex-col rounded-xl border p-7 ${
                         dark
-                          ? "border-[#0A1633] sysdark:border-[#1E3A8A] bg-[#0A1633] sysdark:bg-[#0F1A3A] text-white"
+                          ? "sysdark:border-[#1E3A8A] sysdark:bg-[#0F1A3A] border-[#0A1633] bg-[#0A1633] text-white"
                           : featured
-                            ? "border-[#1D4ED8] sysdark:border-[#3B82F6] bg-white sysdark:bg-[#111317] shadow-[0_30px_60px_-36px_rgba(10,22,51,0.5)] sysdark:shadow-[0_30px_60px_-36px_rgba(37,99,235,0.45)] ring-1 ring-[#1D4ED8] sysdark:ring-[#3B82F6]"
-                            : "border-[#D6DCE6] sysdark:border-[#262B33] bg-white sysdark:bg-[#111317]"
+                            ? "sysdark:border-[#3B82F6] sysdark:bg-[#111317] sysdark:shadow-[0_30px_60px_-36px_rgba(37,99,235,0.45)] sysdark:ring-[#3B82F6] border-[#1D4ED8] bg-white shadow-[0_30px_60px_-36px_rgba(10,22,51,0.5)] ring-1 ring-[#1D4ED8]"
+                            : "sysdark:border-[#262B33] sysdark:bg-[#111317] border-[#D6DCE6] bg-white"
                       }`}
                     >
                       {featured && (
-                        <span className="absolute -top-3 left-7 rounded-full bg-[#1D4ED8] sysdark:bg-[#2563EB] px-3 py-1 text-[11px] font-semibold text-white">
+                        <span className="sysdark:bg-[#2563EB] absolute -top-3 left-7 rounded-full bg-[#1D4ED8] px-3 py-1 text-[11px] font-semibold text-white">
                           Được chọn nhiều
                         </span>
                       )}
                       <h3
                         className={`text-sm font-semibold tracking-wide uppercase ${
                           dark
-                            ? "text-[#BFDBFE] sysdark:text-[#8FB8FF]"
-                            : "text-[#1D4ED8] sysdark:text-[#6EA8FF]"
+                            ? "sysdark:text-[#8FB8FF] text-[#BFDBFE]"
+                            : "sysdark:text-[#6EA8FF] text-[#1D4ED8]"
                         }`}
                       >
                         {plan.name}
@@ -558,14 +611,14 @@ export function GoEatLandingPage() {
                         </span>
                         {plan.unit && (
                           <span
-                            className={`text-sm ${dark ? "text-[#BFDBFE] sysdark:text-[#8FB8FF]" : "text-[#5B6475] sysdark:text-[#8B93A3]"}`}
+                            className={`text-sm ${dark ? "sysdark:text-[#8FB8FF] text-[#BFDBFE]" : "sysdark:text-[#8B93A3] text-[#5B6475]"}`}
                           >
                             {plan.unit}
                           </span>
                         )}
                       </div>
                       <p
-                        className={`mt-2 text-sm ${dark ? "text-[#C7D7F5] sysdark:text-[#A3AAB8]" : "text-[#5B6475] sysdark:text-[#8B93A3]"}`}
+                        className={`mt-2 text-sm ${dark ? "sysdark:text-[#A3AAB8] text-[#C7D7F5]" : "sysdark:text-[#8B93A3] text-[#5B6475]"}`}
                       >
                         {plan.note}
                       </p>
@@ -573,14 +626,14 @@ export function GoEatLandingPage() {
                       <ul
                         className={`mt-6 flex-1 space-y-2.5 border-t pt-6 text-sm ${
                           dark
-                            ? "border-white/10 text-[#E3EDFF] sysdark:text-[#C9CED8]"
-                            : "border-[#E3E7EE] sysdark:border-[#1F232A] text-[#1F2937] sysdark:text-[#E6E9EF]"
+                            ? "sysdark:text-[#C9CED8] border-white/10 text-[#E3EDFF]"
+                            : "sysdark:border-[#1F232A] sysdark:text-[#E6E9EF] border-[#E3E7EE] text-[#1F2937]"
                         }`}
                       >
                         {plan.items.map((item) => (
                           <li key={item} className="flex items-start gap-2.5">
                             <Check
-                              className={`mt-0.5 h-4 w-4 shrink-0 ${dark ? "text-[#60A5FA]" : "text-[#1D4ED8] sysdark:text-[#6EA8FF]"}`}
+                              className={`mt-0.5 h-4 w-4 shrink-0 ${dark ? "text-[#60A5FA]" : "sysdark:text-[#6EA8FF] text-[#1D4ED8]"}`}
                             />
                             <span>{item}</span>
                           </li>
@@ -592,10 +645,10 @@ export function GoEatLandingPage() {
                         onClick={() => setPlan(plan.name)}
                         className={`mt-7 inline-flex min-h-[44px] items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold transition-colors ${
                           dark
-                            ? "bg-white text-[#0A1633] sysdark:text-[#08090B] hover:bg-[#EAF1FF] sysdark:hover:bg-[#E6E9EF]"
+                            ? "sysdark:text-[#08090B] sysdark:hover:bg-[#E6E9EF] bg-white text-[#0A1633] hover:bg-[#EAF1FF]"
                             : featured
-                              ? "bg-[#1D4ED8] sysdark:bg-[#2563EB] text-white hover:bg-[#1E40AF] sysdark:hover:bg-[#3B82F6]"
-                              : "border border-[#C9D0DC] sysdark:border-[#343A44] text-[#111827] sysdark:text-[#E6E9EF] hover:border-[#1D4ED8] sysdark:hover:border-[#3B82F6]"
+                              ? "sysdark:bg-[#2563EB] sysdark:hover:bg-[#3B82F6] bg-[#1D4ED8] text-white hover:bg-[#1E40AF]"
+                              : "sysdark:border-[#343A44] sysdark:text-[#E6E9EF] sysdark:hover:border-[#3B82F6] border border-[#C9D0DC] text-[#111827] hover:border-[#1D4ED8]"
                         }`}
                       >
                         {plan.cta}
@@ -605,18 +658,18 @@ export function GoEatLandingPage() {
                 })}
               </div>
 
-              <p className="mt-8 text-center text-sm text-[#5B6475] sysdark:text-[#8B93A3]">
+              <p className="sysdark:text-[#8B93A3] mt-8 text-center text-sm text-[#5B6475]">
                 Chưa chắc gói nào hợp?{" "}
                 <Link
                   href={TRY_DEMO_HREF}
-                  className="font-semibold text-[#1D4ED8] sysdark:text-[#6EA8FF] hover:underline"
+                  className="sysdark:text-[#6EA8FF] font-semibold text-[#1D4ED8] hover:underline"
                 >
                   Dùng thử miễn phí 7 ngày
                 </Link>{" "}
                 hoặc{" "}
                 <a
                   href="#dang-ky"
-                  className="font-semibold text-[#1D4ED8] sysdark:text-[#6EA8FF] hover:underline"
+                  className="sysdark:text-[#6EA8FF] font-semibold text-[#1D4ED8] hover:underline"
                 >
                   nhắn Zalo để được tư vấn
                 </a>
@@ -628,7 +681,7 @@ export function GoEatLandingPage() {
           <section
             id="hoi-dap"
             aria-labelledby="hoi-dap-title"
-            className="relative scroll-mt-24 border-t border-[#E3E7EE] py-12 lg:py-16 sysdark:border-[#1F232A]"
+            className="sysdark:border-[#1F232A] relative scroll-mt-24 border-t border-[#E3E7EE] py-12 lg:py-16"
           >
             <RailMarks />
             <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
@@ -636,25 +689,25 @@ export function GoEatLandingPage() {
                 <Eyebrow index="03">Hỏi đáp</Eyebrow>
                 <h2
                   id="hoi-dap-title"
-                  className="mt-2 font-medium tracking-[-0.02em] text-[#0B1220] [text-wrap:balance] sysdark:text-[#F5F7FA]"
+                  className="sysdark:text-[#F5F7FA] mt-2 font-medium tracking-[-0.02em] [text-wrap:balance] text-[#0B1220]"
                   style={HEADING_STYLE}
                 >
                   Câu hỏi thường gặp
                 </h2>
               </div>
-              <div className="divide-y divide-[#E3E7EE] border-y border-[#E3E7EE] lg:col-span-8 sysdark:divide-[#1F232A] sysdark:border-[#1F232A]">
+              <div className="sysdark:divide-[#1F232A] sysdark:border-[#1F232A] divide-y divide-[#E3E7EE] border-y border-[#E3E7EE] lg:col-span-8">
                 {FAQ.map((f, i) => (
                   <details key={f.q} open={i === 0} className="group">
-                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-base font-semibold text-[#0B1220] sysdark:text-[#F5F7FA] [&::-webkit-details-marker]:hidden">
+                    <summary className="sysdark:text-[#F5F7FA] flex cursor-pointer list-none items-center justify-between gap-4 py-4 text-base font-semibold text-[#0B1220] [&::-webkit-details-marker]:hidden">
                       <h3>{f.q}</h3>
                       <span
                         aria-hidden
-                        className="font-mono text-lg leading-none text-[#1D4ED8] transition-transform group-open:rotate-45 sysdark:text-[#6EA8FF]"
+                        className="sysdark:text-[#6EA8FF] font-mono text-lg leading-none text-[#1D4ED8] transition-transform group-open:rotate-45"
                       >
                         +
                       </span>
                     </summary>
-                    <p className="pb-5 text-sm leading-relaxed text-[#4B5565] sysdark:text-[#A3AAB8]">
+                    <p className="sysdark:text-[#A3AAB8] pb-5 text-sm leading-relaxed text-[#4B5565]">
                       {f.a}
                     </p>
                   </details>
@@ -666,14 +719,14 @@ export function GoEatLandingPage() {
           {/* ---------- Đăng ký ---------- */}
           <section
             id="dang-ky"
-            className="relative scroll-mt-24 overflow-hidden border-t border-[#E3E7EE] sysdark:border-[#1F232A] bg-[#F7F9FC] sysdark:bg-[#0E1014] py-14 lg:py-20"
+            className="sysdark:border-[#1F232A] sysdark:bg-[#0E1014] relative scroll-mt-24 overflow-hidden border-t border-[#E3E7EE] bg-[#F7F9FC] py-14 lg:py-20"
           >
             <RailMarks />
             <CubeBackdrop id="goeat-cubes-contact" light />
             <div className="relative isolate mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
               <SoftGlow className="inset-x-10 -inset-y-6" />
-              <div className="grid grid-cols-1 overflow-hidden rounded-xl border border-[#D6DCE6] sysdark:border-[#262B33] bg-white sysdark:bg-[#111317] lg:grid-cols-5">
-                <div className="bg-[#1D4ED8] sysdark:bg-[#2563EB] p-8 text-white sm:p-10 lg:col-span-2">
+              <div className="sysdark:border-[#262B33] sysdark:bg-[#111317] grid grid-cols-1 overflow-hidden rounded-xl border border-[#D6DCE6] bg-white lg:grid-cols-5">
+                <div className="sysdark:bg-[#2563EB] bg-[#1D4ED8] p-8 text-white sm:p-10 lg:col-span-2">
                   <h2
                     className="font-medium tracking-[-0.02em] [text-wrap:balance]"
                     style={{
@@ -684,10 +737,10 @@ export function GoEatLandingPage() {
                     Liên hệ <span className="whitespace-nowrap">tư vấn</span>{" "}
                     &amp; <span className="whitespace-nowrap">báo giá</span>
                   </h2>
-                  <p className="mt-3 text-sm leading-relaxed text-[#C7D7F5] sysdark:text-[#A3AAB8]">
+                  <p className="sysdark:text-[#A3AAB8] mt-3 text-sm leading-relaxed text-[#C7D7F5]">
                     Nhắn Zalo hoặc gọi trực tiếp, trả lời trong giờ làm việc.
                   </p>
-                  <ul className="mt-6 space-y-2.5 text-sm text-[#E3EDFF] sysdark:text-[#C9CED8]">
+                  <ul className="sysdark:text-[#C9CED8] mt-6 space-y-2.5 text-sm text-[#E3EDFF]">
                     {[
                       "Demo theo quy trình nhà ăn của bạn",
                       "Tư vấn chọn gói phù hợp",
@@ -702,7 +755,7 @@ export function GoEatLandingPage() {
                 </div>
 
                 <div className="p-8 sm:p-10 lg:col-span-3">
-                  <p className="text-xs font-semibold text-[#111827] sysdark:text-[#E6E9EF]">
+                  <p className="sysdark:text-[#E6E9EF] text-xs font-semibold text-[#111827]">
                     Gói quan tâm
                   </p>
                   <div className="mt-1.5 grid grid-cols-3 gap-2">
@@ -716,8 +769,8 @@ export function GoEatLandingPage() {
                           onClick={() => setPlan(name)}
                           className={`rounded-md border px-3 py-2.5 text-center text-sm font-semibold transition-colors ${
                             checked
-                              ? "border-[#1D4ED8] sysdark:border-[#3B82F6] bg-[#1D4ED8] sysdark:bg-[#2563EB] text-white"
-                              : "border-[#C9D0DC] sysdark:border-[#343A44] text-[#1F2937] sysdark:text-[#E6E9EF] hover:border-[#1D4ED8] sysdark:hover:border-[#3B82F6]"
+                              ? "sysdark:border-[#3B82F6] sysdark:bg-[#2563EB] border-[#1D4ED8] bg-[#1D4ED8] text-white"
+                              : "sysdark:border-[#343A44] sysdark:text-[#E6E9EF] sysdark:hover:border-[#3B82F6] border-[#C9D0DC] text-[#1F2937] hover:border-[#1D4ED8]"
                           }`}
                         >
                           {name}
@@ -741,7 +794,7 @@ export function GoEatLandingPage() {
                       {showPhone ? (
                         <a
                           href={`tel:${CONTACT.phone}`}
-                          className="flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-[#1D4ED8] sysdark:border-[#3B82F6] px-4 py-2.5 text-sm font-semibold text-[#1D4ED8] sysdark:text-[#6EA8FF] transition-colors hover:bg-[#EAF1FF]"
+                          className="sysdark:border-[#3B82F6] sysdark:text-[#6EA8FF] flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-[#1D4ED8] px-4 py-2.5 text-sm font-semibold text-[#1D4ED8] transition-colors hover:bg-[#EAF1FF]"
                         >
                           <Phone className="h-4 w-4" />
                           <span className="tnum">{CONTACT.phoneLabel}</span>
@@ -750,7 +803,7 @@ export function GoEatLandingPage() {
                         <button
                           type="button"
                           onClick={() => setShowPhone(true)}
-                          className="flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-[#C9D0DC] sysdark:border-[#343A44] px-4 py-2.5 text-sm font-semibold text-[#111827] sysdark:text-[#E6E9EF] transition-colors hover:border-[#1D4ED8] sysdark:hover:border-[#3B82F6] hover:text-[#1D4ED8] sysdark:hover:text-[#6EA8FF]"
+                          className="sysdark:border-[#343A44] sysdark:text-[#E6E9EF] sysdark:hover:border-[#3B82F6] sysdark:hover:text-[#6EA8FF] flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-[#C9D0DC] px-4 py-2.5 text-sm font-semibold text-[#111827] transition-colors hover:border-[#1D4ED8] hover:text-[#1D4ED8]"
                         >
                           <Phone className="h-4 w-4" />
                           Hiện số điện thoại
@@ -758,14 +811,14 @@ export function GoEatLandingPage() {
                       )}
                       <a
                         href={`mailto:${CONTACT.email}?subject=${encodeURIComponent(`Tư vấn GoEat - gói ${plan}`)}`}
-                        className="flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-[#C9D0DC] sysdark:border-[#343A44] px-4 py-2.5 text-sm font-semibold text-[#111827] sysdark:text-[#E6E9EF] transition-colors hover:border-[#1D4ED8] sysdark:hover:border-[#3B82F6] hover:text-[#1D4ED8] sysdark:hover:text-[#6EA8FF]"
+                        className="sysdark:border-[#343A44] sysdark:text-[#E6E9EF] sysdark:hover:border-[#3B82F6] sysdark:hover:text-[#6EA8FF] flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-[#C9D0DC] px-4 py-2.5 text-sm font-semibold text-[#111827] transition-colors hover:border-[#1D4ED8] hover:text-[#1D4ED8]"
                       >
                         <Mail className="h-4 w-4 shrink-0" />
                         {CONTACT.email}
                       </a>
                     </div>
                   </div>
-                  <p className="mt-4 text-xs text-[#5B6475] sysdark:text-[#8B93A3]">
+                  <p className="sysdark:text-[#8B93A3] mt-4 text-xs text-[#5B6475]">
                     Khi nhắn, cho biết tên đơn vị và số suất mỗi ngày để báo giá
                     nhanh hơn.
                   </p>
