@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+/* Công tắc giao diện (components/goeat-theme-toggle.tsx) ghi `data-goeat-theme`
+   lên <html>: "dark" = luôn tối, "light" = luôn sáng, không có = theo máy. */
+@custom-variant sysdark {
+  &:where(:root[data-goeat-theme="dark"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not([data-goeat-theme="light"]) *) {
+      @slot;
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Số canh cột đều */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}

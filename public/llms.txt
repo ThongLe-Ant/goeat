@@ -1,0 +1,25 @@
+# GoEat
+
+> GoEat là phần mềm quản lý suất ăn công nghiệp và căn-tin nội bộ cho nhà máy, cơ quan và đơn vị thầu bếp tại Việt Nam. Người ăn chọn món theo tuần, bếp nhận số suất theo từng ca, quầy quẹt thẻ phát cơm, cuối tháng đối soát bằng Excel.
+
+## Trang chính
+- [Trang chủ](https://goeat.vn/): giới thiệu sản phẩm, quy trình một ngày, bảng giá, hỏi đáp, đăng ký tư vấn
+- [Chức năng](https://goeat.vn/chuc-nang): chi tiết từng chức năng và bảng so sánh các gói
+- [Dùng thử demo](https://goeat.vn/dung-thu): nhập email để nhận tài khoản demo riêng dùng 7 ngày, vào app thật với dữ liệu mẫu (máy chủ demo 2 CPU, 4 GB RAM, 10 GB lưu trữ)
+
+## Chức năng
+- Chọn món theo tuần trên điện thoại; quản lý đặt thay cho người không dùng điện thoại
+- Tự chốt số suất báo bếp theo từng ca
+- Quẹt thẻ nhận cơm tại quầy; cấp thẻ tạm, phát tay cho người quên thẻ, người mới, khách — mỗi lượt đều ghi lý do
+- Căn-tin bán lẻ, thanh toán bằng mã QR
+- Đối soát theo kỳ, xuất Excel
+- Kết nối API với phần mềm nhân sự, máy chấm công (gói Nâng cao)
+
+## Bảng giá
+- Cơ bản: 1.000.000đ/tháng
+- Tuỳ biến: 2.500.000đ/tháng
+- Nâng cao: báo giá theo nhu cầu
+
+## Liên hệ
+- Zalo / điện thoại: 0396870644
+- Email: thongproleminh@gmail.com
