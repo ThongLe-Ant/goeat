@@ -15,15 +15,10 @@
 
 html {
   scroll-behavior: smooth;
-  /* Trên điện thoại cuộn quá đáy thì trình duyệt "nảy" và để lộ nền canvas —
-     nền mặc định trắng hiện thành một khoảng trắng dưới chân trang tối. Tắt
-     nảy dọc và cho canvas cùng màu chân trang (GoEatFooter). */
-  overscroll-behavior-y: none;
+  /* Cho canvas cùng màu chân trang (GoEatFooter) khi cuộn quá đáy trên điện thoại.
+     Không đặt overscroll-behavior-y: none trên html/body vì sẽ chặn thao tác kéo
+     xuống để làm mới trang (pull-to-refresh) của trình duyệt. */
   background-color: #0a1633;
-}
-
-body {
-  overscroll-behavior-y: none;
 }
 
 :root[data-goeat-theme="dark"] {
