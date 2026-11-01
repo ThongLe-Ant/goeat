@@ -178,7 +178,7 @@ export function GoEatDemoSignup() {
           <a
             href={DEMO_SIGN_IN_URL}
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer nofollow"
             className="inline-flex min-h-[44px] items-center px-2 text-sm font-semibold text-[#1D4ED8] sysdark:text-[#6EA8FF] hover:underline"
           >
             Hoặc tự đăng nhập tại demo.goeat.vn

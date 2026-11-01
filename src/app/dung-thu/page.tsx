@@ -1,5 +1,10 @@
 import { GoEatTryDemoPage } from "@/components/goeat-try-demo"
-import { TRY_DEMO_PATH, goEatMetadata } from "@/components/goeat-seo"
+import {
+  JsonLd,
+  TRY_DEMO_PATH,
+  goEatMetadata,
+  tryDemoJsonLd,
+} from "@/components/goeat-seo"
 
 export const metadata = goEatMetadata({
   path: TRY_DEMO_PATH,
@@ -9,5 +14,10 @@ export const metadata = goEatMetadata({
 })
 
 export default function TryDemoPage() {
-  return <GoEatTryDemoPage />
+  return (
+    <>
+      <JsonLd data={tryDemoJsonLd()} />
+      <GoEatTryDemoPage />
+    </>
+  )
 }

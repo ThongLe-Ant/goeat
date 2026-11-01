@@ -7,9 +7,10 @@ import { CONTACT, FAQ, FEATURE_MODULES, PLANS } from "./goeat-shared"
  * AI đọc được sản phẩm là gì, giá bao nhiêu, liên hệ ở đâu. */
 
 /** Tên miền chính thức của trang giới thiệu. Đổi bằng biến SITE_URL. */
-export const SITE_URL = (
-process.env.SITE_URL || "https://goeat.vn"
-).replace(/\/$/, "")
+export const SITE_URL = (process.env.SITE_URL || "https://goeat.vn").replace(
+  /\/$/,
+  "",
+)
 
 export const LANDING_PATH = "/"
 export const FEATURES_PATH = "/chuc-nang"
@@ -44,6 +45,7 @@ export function goEatMetadata({
   title: string
   description: string
 }): Metadata {
+  const url = abs(path)
   return {
     metadataBase: new URL(SITE_URL),
     // `absolute`: bỏ đuôi "| <tên đơn vị>" mà layout gốc gắn vào.
@@ -51,13 +53,13 @@ export function goEatMetadata({
     description,
     keywords: KEYWORDS,
     applicationName: "GoEat",
-    alternates: { canonical: path },
+    alternates: { canonical: url },
     robots: { index: true, follow: true },
     openGraph: {
       type: "website",
       locale: "vi_VN",
       siteName: "GoEat",
-      url: path,
+      url,
       title,
       description,
       images: [OG_IMAGE],
@@ -210,6 +212,42 @@ export function featuresJsonLd() {
             name: m.title,
             description: m.text,
           })),
+        },
+      },
+    ],
+  }
+}
+
+export function tryDemoJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      organization,
+      software,
+      {
+        "@type": "WebPage",
+        "@id": `${SITE_URL}${TRY_DEMO_PATH}#webpage`,
+        url: abs(TRY_DEMO_PATH),
+        name: "Dùng thử GoEat miễn phí",
+        inLanguage: "vi",
+        about: { "@id": APP_ID },
+        publisher: { "@id": ORG_ID },
+        breadcrumb: {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "GoEat",
+              item: abs(LANDING_PATH),
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Dùng thử miễn phí",
+              item: abs(TRY_DEMO_PATH),
+            },
+          ],
         },
       },
     ],
