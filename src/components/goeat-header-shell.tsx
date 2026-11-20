@@ -32,8 +32,8 @@ export function GoEatHeaderShell({
         <header
           className={`relative mx-auto flex h-14 ${width} items-center justify-between gap-4 rounded-2xl border px-3 pl-4 transition-all duration-300 sm:px-4 sm:pl-5 ${
             scrolled
-              ? "border-[#D6DCE6] sysdark:border-[#262B33] bg-white/90 sysdark:bg-[#0E1014]/85 shadow-[0_10px_30px_-12px_rgba(11,18,32,0.28)] sysdark:shadow-[0_10px_30px_-12px_rgba(0,0,0,0.28)] backdrop-blur-md"
-              : "border-white/60 sysdark:border-white/10 bg-white/95 sysdark:bg-[#0E1014]/90 shadow-[0_8px_24px_-14px_rgba(11,18,32,0.35)] sysdark:shadow-[0_8px_24px_-14px_rgba(0,0,0,0.35)] backdrop-blur-sm"
+              ? "sysdark:border-[#262B33] sysdark:bg-[#0E1014]/85 sysdark:shadow-[0_10px_30px_-12px_rgba(0,0,0,0.28)] border-[#D6DCE6] bg-white/90 shadow-[0_10px_30px_-12px_rgba(11,18,32,0.28)] backdrop-blur-md"
+              : "sysdark:border-white/10 sysdark:bg-[#0E1014]/90 sysdark:shadow-[0_8px_24px_-14px_rgba(0,0,0,0.35)] border-white/60 bg-white/95 shadow-[0_8px_24px_-14px_rgba(11,18,32,0.35)] backdrop-blur-sm"
           }`}
         >
           {children}

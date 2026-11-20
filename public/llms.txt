@@ -1,25 +1,46 @@
-# GoEat
+# GoEat (https://goeat.vn)
 
-> GoEat là phần mềm quản lý suất ăn công nghiệp và căn-tin nội bộ cho nhà máy, cơ quan và đơn vị thầu bếp tại Việt Nam. Người ăn chọn món theo tuần, bếp nhận số suất theo từng ca, quầy quẹt thẻ phát cơm, cuối tháng đối soát bằng Excel.
+> GoEat là phần mềm quản lý suất ăn công nghiệp và căn-tin nội bộ cho nhà máy sản xuất, doanh nghiệp FDI khu công nghiệp, cơ quan và đơn vị thầu bếp tại Việt Nam. Quy trình khép kín: công nhân chọn món theo tuần trên điện thoại (hoặc tổ trưởng đặt thay), hệ thống tự chốt số suất báo bếp theo từng ca, quầy quẹt thẻ nhân viên phát cơm dưới 0,5 giây chống nhận trùng, xử lý thẻ tạm & ngoại lệ không cần phiếu giấy, cuối kỳ xuất biên bản đối soát Excel A4 khớp 3 bên (HCNS – Kế toán – Nhà thầu bếp).
 
-## Trang chính
-- [Trang chủ](https://goeat.vn/): giới thiệu sản phẩm, quy trình một ngày, bảng giá, hỏi đáp, đăng ký tư vấn
-- [Chức năng](https://goeat.vn/chuc-nang): chi tiết từng chức năng và bảng so sánh các gói
-- [Dùng thử demo](https://goeat.vn/dung-thu): nhập email để nhận tài khoản demo riêng dùng 7 ngày, vào app thật với dữ liệu mẫu (máy chủ demo 2 CPU, 4 GB RAM, 10 GB lưu trữ)
+## Đối tượng áp dụng mục tiêu
+1. **Nhà máy sản xuất & Doanh nghiệp FDI trong Khu công nghiệp (100 – trên 2.000 nhân sự)**:
+   - Kiểm soát chặt nhiều ca ăn (Ca 1, Ca 2, Ca 3, Ca gãy, Ca đêm) và suất tăng ca phát sinh sau giờ chốt.
+   - Tận dụng ngay thẻ từ nhân viên sẵn có (RFID 125KHz / Mifare 13.56MHz) tại đầu chuyền phát cơm.
+   - Phân bổ chi phí suất ăn theo từng phòng ban, phân xưởng (Cost Center) và tách riêng suất ăn khách.
+2. **Đơn vị thầu bếp ăn công nghiệp (Industrial Caterers)**:
+   - Nhận số lượng suất cần nấu chính xác ngay tại phút khoá sổ (tách riêng mặn, chay, món thay thế).
+   - Đối chiếu minh bạch số chốt báo nấu với số thực phát tại quầy, chấm dứt tranh cãi công nợ cuối tháng.
+3. **Cơ quan, bệnh viện, trường học & căn-tin nội bộ**:
+   - Đặt trước suất ăn chính và đặt thêm đồ ăn/thức uống căn-tin nội bộ, thanh toán tự động qua mã VietQR.
 
-## Chức năng
-- Chọn món theo tuần trên điện thoại; quản lý đặt thay cho người không dùng điện thoại
-- Tự chốt số suất báo bếp theo từng ca
-- Quẹt thẻ nhận cơm tại quầy; cấp thẻ tạm, phát tay cho người quên thẻ, người mới, khách — mỗi lượt đều ghi lý do
-- Căn-tin bán lẻ, thanh toán bằng mã QR
-- Đối soát theo kỳ, xuất Excel
-- Kết nối API với phần mềm nhân sự, máy chấm công (gói Nâng cao)
+## Danh mục trang chính
+- [Trang chủ](https://goeat.vn/): Giới thiệu sản phẩm, luồng vận hành 1 ngày, biểu phí B2B theo quy mô nhân sự, câu hỏi thường gặp (FAQ) và liên hệ khảo sát.
+- [Chức năng chi tiết (6 phân hệ)](https://goeat.vn/chuc-nang): Mô tả nghiệp vụ kèm ảnh chụp màn hình thực tế từng bước và bảng đối chiếu phạm vi 3 gói.
+- [Dùng thử miễn phí 7 ngày](https://goeat.vn/dung-thu): Nhập email nhận ngay tài khoản demo riêng dùng 7 ngày trên máy chủ chạy thật với dữ liệu mẫu đầy đủ (2 CPU, 4 GB RAM, 10 GB lưu trữ).
+- [Hồ sơ giải pháp & Biểu phí B2B (In A4 / PDF)](https://goeat.vn/ho-so-giai-phap): Tài liệu tóm tắt giải pháp chuẩn khổ A4 để Phòng HCNS, Kế toán và IT trình ký Ban Giám đốc / CFO.
+- [Cẩm nang quản lý suất ăn công nghiệp](https://goeat.vn/cam-nang):
+  - [Quy trình quản lý suất ăn công nghiệp bằng thẻ nhân viên: Cắt giảm 100% suất ăn ảo & chênh lệch cuối tháng](https://goeat.vn/cam-nang/quy-trinh-quan-ly-suat-an-cong-nghiep-chong-that-thoat)
+  - [Cách xử lý công nhân quên thẻ, nhân viên mới, khách & suất tăng ca tại nhà ăn nhà máy không cần phiếu giấy](https://goeat.vn/cam-nang/xu-ly-cong-nhan-quen-the-suat-an-tang-ca-va-khach)
+  - [Hướng dẫn đối soát suất ăn công nghiệp cuối kỳ giữa Phòng HCNS, Kế toán và Đơn vị thầu bếp](https://goeat.vn/cam-nang/mau-doi-soat-suat-an-nha-may-giua-hcns-va-nha-thau-bep)
+  - [So sánh 4 phương pháp kiểm soát nhà ăn nhà máy: Phiếu giấy, Vân tay, Khuôn mặt và Quẹt thẻ kết hợp đặt món trước](https://goeat.vn/cam-nang/so-sanh-phieu-an-giay-van-tay-khuon-mat-va-quet-the-dat-mon)
+- [Chính sách bảo mật & Quyền riêng tư](https://goeat.vn/chinh-sach-bao-mat): Nguyên tắc cô lập cơ sở dữ liệu doanh nghiệp, bảo mật mã thẻ nhân viên và quy định sử dụng email demo.
 
-## Bảng giá
-- Cơ bản: 1.000.000đ/tháng
-- Tuỳ biến: 2.500.000đ/tháng
-- Nâng cao: báo giá theo nhu cầu
+## 6 phân hệ nghiệp vụ cốt lõi (/chuc-nang)
+1. **Đặt món theo tuần (#dat-mon)**: Công nhân chọn ca và món cho cả tuần trên điện thoại; quản lý đặt thay cho người không dùng điện thoại; khoá sửa tự động theo giờ chốt từng ca.
+2. **Tự động chốt số báo bếp (#bao-bep)**: Cộng tự động số suất cần nấu cho từng ca (tách mặn, chay, món thay thế); mở cửa sổ nhập suất tăng ca phát sinh có kiểm soát.
+3. **Quẹt thẻ nhận món tại quầy (#nhan-mon)**: Quẹt thẻ nhân viên dưới 0,5 giây, màn hình hiện chữ to tên món và người nhận; cảnh báo sai quầy và chặn quẹt thẻ nhận trùng trong ca.
+4. **Xử lý ngoại lệ & thẻ tạm (#ngoai-le)**: Cấp thẻ tạm trong ca cho người quên thẻ; phát ngoại lệ cho nhân viên mới và khách có bắt buộc chọn lý do.
+5. **Căn-tin nội bộ thanh toán QR (#can-tin)**: Đặt trước đồ ăn thêm, nước uống theo khung giờ nhận và thanh toán chuyển khoản VietQR tự động gạch đơn (Gói Enterprise).
+6. **Báo cáo & đối soát cuối kỳ (#doi-soat)**: Đối chiếu số đăng ký chốt bếp, thực nhận qua thẻ, đăng ký bỏ bữa và phát ngoại lệ theo ngày/ca/phòng ban; xuất Excel chuẩn A4 trình ký.
 
-## Liên hệ
-- Zalo / điện thoại: 0396870644
+## Biểu phí thuê phần mềm B2B (Dùng thử miễn phí 7 ngày)
+- **Standard — 1.000.000đ/tháng** (Niêm yết 1.500.000đ/tháng · Dưới 300 nhân sự · 1 bếp / 1–2 quầy): Chuẩn hóa đặt món tuần, tự chốt số báo bếp, quẹt thẻ chống nhận trùng, xuất đối soát Excel A4. Miễn phí khởi tạo danh sách nhân sự & hướng dẫn quầy phát cơm (2.000.000đ).
+- **Professional — 2.500.000đ/tháng** (Niêm yết 3.500.000đ/tháng · 300 – 1.000 nhân sự · Nhà máy KCN / FDI): Toàn bộ gói Standard + cấu hình ca gãy/ca đêm/giờ chốt riêng, cấp thẻ tạm quên thẻ, quản lý suất khách & tăng ca, tuỳ biến mẫu biên bản đối soát riêng. Miễn phí cấu hình & đào tạo quầy (4.500.000đ).
+- **Enterprise — Từ 4.900.000đ/tháng** (Trên 1.000 nhân sự · Đa nhà máy / Thầu bếp): Toàn bộ gói Professional + máy chủ độc lập, tích hợp API Máy chấm công / HRM đồng bộ danh sách đi làm hàng ngày, Kiosk cảm ứng tại xưởng và Căn-tin nội bộ VietQR.
+
+## Thông tin liên hệ khảo sát & Demo
+- Website: https://goeat.vn
+- Cổng nhận tài khoản dùng thử 7 ngày: https://goeat.vn/dung-thu
+- Hồ sơ giải pháp PDF (A4): https://goeat.vn/ho-so-giai-phap
+- Zalo / Điện thoại: 0396 870 644 (https://zalo.me/0396870644)
 - Email: thongproleminh@gmail.com

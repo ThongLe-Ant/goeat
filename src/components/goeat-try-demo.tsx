@@ -55,7 +55,7 @@ const NOTES = [
 
 export function GoEatTryDemoPage() {
   return (
-    <div className="min-h-dvh bg-white sysdark:bg-[#08090B] text-[#0B1220] sysdark:text-[#F5F7FA] antialiased selection:bg-[#1D4ED8] sysdark:selection:bg-[#2563EB] selection:text-white">
+    <div className="sysdark:bg-[#08090B] sysdark:text-[#F5F7FA] sysdark:selection:bg-[#2563EB] min-h-dvh bg-white text-[#0B1220] antialiased selection:bg-[#1D4ED8] selection:text-white">
       <GoEatHeader active="Dùng thử" />
       <div aria-hidden="true" className="h-[76px]" />
 
@@ -66,40 +66,40 @@ export function GoEatTryDemoPage() {
             <Eyebrow>Dùng thử miễn phí</Eyebrow>
             <h1
               style={HEADING_STYLE}
-              className="mt-4 text-3xl font-semibold tracking-tight text-[#0B1220] sysdark:text-[#F5F7FA] sm:text-4xl"
+              className="sysdark:text-[#F5F7FA] mt-4 text-3xl font-semibold tracking-tight text-[#0B1220] sm:text-4xl"
             >
               Trải nghiệm GoEat với dữ liệu mẫu đầy đủ
             </h1>
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-[#4B5563] sysdark:text-[#A3ABB8]">
+            <p className="sysdark:text-[#A3ABB8] mt-4 max-w-xl text-base leading-relaxed text-[#4B5563]">
               Nhập email để nhận tài khoản riêng vào bản demo chạy thật: đã có
               sẵn nhân viên, ca ăn, thực đơn, lượt quẹt thẻ, đơn căn-tin và báo
               cáo để bạn xem và thao tác ngay.
             </p>
 
             <div className="mt-8">
-              <h2 className="text-sm font-semibold text-[#1F2937] sysdark:text-[#E6E9EF]">
+              <h2 className="sysdark:text-[#E6E9EF] text-sm font-semibold text-[#1F2937]">
                 Cấu hình máy chủ demo
               </h2>
               <dl className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
                 {DEMO_SERVER.map(({ icon: Icon, label, value }) => (
                   <div
                     key={label}
-                    className="rounded-xl border border-[#E3E7EE] sysdark:border-[#1F232A] bg-[#F7F9FC] sysdark:bg-[#0E1014] p-3.5"
+                    className="sysdark:border-[#1F232A] sysdark:bg-[#0E1014] rounded-xl border border-[#E3E7EE] bg-[#F7F9FC] p-3.5"
                   >
-                    <dt className="flex items-center gap-1.5 text-xs font-medium text-[#5B6577] sysdark:text-[#8B93A1]">
-                      <Icon className="h-3.5 w-3.5 text-[#1D4ED8] sysdark:text-[#6EA8FF]" />
+                    <dt className="sysdark:text-[#8B93A1] flex items-center gap-1.5 text-xs font-medium text-[#5B6577]">
+                      <Icon className="sysdark:text-[#6EA8FF] h-3.5 w-3.5 text-[#1D4ED8]" />
                       {label}
                     </dt>
-                    <dd className="tnum mt-1.5 text-lg font-semibold text-[#0B1220] sysdark:text-[#F5F7FA]">
+                    <dd className="tnum sysdark:text-[#F5F7FA] mt-1.5 text-lg font-semibold text-[#0B1220]">
                       {value}
                     </dd>
                   </div>
                 ))}
               </dl>
-              <p className="mt-2.5 text-xs text-[#5B6577] sysdark:text-[#8B93A1]">
-                Bản demo dùng máy chủ nhỏ, chia sẻ cho nhiều khách cùng lúc.
-                Tốc độ thực tế khi triển khai cho đơn vị của bạn sẽ theo cấu
-                hình riêng.
+              <p className="sysdark:text-[#8B93A1] mt-2.5 text-xs text-[#5B6577]">
+                Bản demo dùng máy chủ nhỏ, chia sẻ cho nhiều khách cùng lúc. Tốc
+                độ thực tế khi triển khai cho đơn vị của bạn sẽ theo cấu hình
+                riêng.
               </p>
             </div>
           </div>
@@ -110,7 +110,7 @@ export function GoEatTryDemoPage() {
           </div>
         </section>
 
-        <section className="border-t border-[#E3E7EE] sysdark:border-[#1F232A] bg-[#F7F9FC] sysdark:bg-[#0B0D11]">
+        <section className="sysdark:border-[#1F232A] sysdark:bg-[#0B0D11] border-t border-[#E3E7EE] bg-[#F7F9FC]">
           <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
             <Eyebrow>Hướng dẫn</Eyebrow>
             <h2
@@ -123,16 +123,16 @@ export function GoEatTryDemoPage() {
               {STEPS.map((step, i) => (
                 <li
                   key={step.title}
-                  className="rounded-2xl border border-[#E3E7EE] sysdark:border-[#1F232A] bg-white sysdark:bg-[#12151B] p-5"
+                  className="sysdark:border-[#1F232A] sysdark:bg-[#12151B] rounded-2xl border border-[#E3E7EE] bg-white p-5"
                 >
-                  <p className="font-mono text-xs text-[#9AA8C2] sysdark:text-[#4B5363]">
+                  <p className="sysdark:text-[#4B5363] font-mono text-xs text-[#9AA8C2]">
                     [{String(i + 1).padStart(2, "0")}]
                   </p>
                   <h3 className="mt-2 text-base font-semibold">{step.title}</h3>
-                  <p className="mt-1 text-xs font-medium text-[#1D4ED8] sysdark:text-[#6EA8FF]">
+                  <p className="sysdark:text-[#6EA8FF] mt-1 text-xs font-medium text-[#1D4ED8]">
                     {step.menu}
                   </p>
-                  <p className="mt-2.5 text-sm leading-relaxed text-[#4B5563] sysdark:text-[#A3ABB8]">
+                  <p className="sysdark:text-[#A3ABB8] mt-2.5 text-sm leading-relaxed text-[#4B5563]">
                     {step.body}
                   </p>
                 </li>
@@ -140,10 +140,10 @@ export function GoEatTryDemoPage() {
             </ol>
 
             <h3 className="mt-10 text-sm font-semibold">Lưu ý</h3>
-            <ul className="mt-3 space-y-2 text-sm text-[#4B5563] sysdark:text-[#A3ABB8]">
+            <ul className="sysdark:text-[#A3ABB8] mt-3 space-y-2 text-sm text-[#4B5563]">
               {NOTES.map((note) => (
                 <li key={note} className="flex gap-2.5">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-[#1D4ED8] sysdark:bg-[#6EA8FF]" />
+                  <span className="sysdark:bg-[#6EA8FF] mt-2 h-1.5 w-1.5 shrink-0 bg-[#1D4ED8]" />
                   {note}
                 </li>
               ))}

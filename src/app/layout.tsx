@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import type { ReactNode } from "react"
 
+import { GoEatAnalytics } from "@/components/goeat-analytics"
 import { SITE_URL } from "@/components/goeat-seo"
 
 import "./globals.css"
@@ -23,6 +24,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="vi" suppressHydrationWarning>
       <body>
         <main className="min-h-screen w-full">{children}</main>
+        <GoEatAnalytics />
       </body>
     </html>
   )

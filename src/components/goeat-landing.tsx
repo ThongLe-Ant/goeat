@@ -24,6 +24,7 @@ import {
 } from "lucide-react"
 
 import {
+  BROCHURE_HREF,
   CONTACT,
   CubeBackdrop,
   Eyebrow,
@@ -416,7 +417,7 @@ function ProductHero() {
 /* ---------- Trang ---------- */
 
 export function GoEatLandingPage() {
-  const [plan, setPlan] = useState<string>("Tuỳ biến")
+  const [plan, setPlan] = useState<string>("Professional")
   const [showPhone, setShowPhone] = useState(false)
 
   return (
@@ -549,7 +550,7 @@ export function GoEatLandingPage() {
                 </b>
                 đặt trước đồ ăn thêm, trả bằng mã QR.
                 <span className="sysdark:bg-[#1E3A8A] rounded-full bg-[#0B1220] px-2 py-0.5 text-xs font-semibold text-white">
-                  Gói Nâng cao
+                  Gói Enterprise
                 </span>
               </p>
             </div>
@@ -564,24 +565,29 @@ export function GoEatLandingPage() {
           >
             <RailMarks />
             <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-              <div className="mx-auto max-w-2xl text-center">
+              <div className="mx-auto max-w-3xl text-center">
                 <Eyebrow index="02">Bảng giá</Eyebrow>
                 <h2
                   className="sysdark:text-[#F5F7FA] mt-2 font-medium tracking-[-0.02em] [text-wrap:balance] text-[#0B1220]"
                   style={HEADING_STYLE}
                 >
-                  Chọn gói phù hợp với đơn vị bạn
+                  Biểu phí theo quy mô nhà máy &amp; đơn vị thầu bếp
                 </h2>
+                <p className="sysdark:text-[#A3AAB8] mt-2.5 text-sm leading-relaxed text-[#4B5565] sm:text-base">
+                  Mỗi doanh nghiệp vận hành trên cơ sở dữ liệu độc lập · Miễn
+                  phí 100% chi phí khởi tạo ban đầu và cấp tài khoản dùng thử 7
+                  ngày trước khi ký hợp đồng.
+                </p>
               </div>
 
               <div className="relative isolate mt-12 grid grid-cols-1 gap-5 md:grid-cols-3 md:items-stretch">
                 <SoftGlow className="inset-x-1/4 -inset-y-10" />
-                {PLANS.map((plan) => {
-                  const dark = plan.tone === "dark"
-                  const featured = plan.tone === "featured"
+                {PLANS.map((p) => {
+                  const dark = p.tone === "dark"
+                  const featured = p.tone === "featured"
                   return (
                     <div
-                      key={plan.id}
+                      key={p.id}
                       className={`relative flex flex-col rounded-xl border p-7 ${
                         dark
                           ? "sysdark:border-[#1E3A8A] sysdark:bg-[#0F1A3A] border-[#0A1633] bg-[#0A1633] text-white"
@@ -592,45 +598,110 @@ export function GoEatLandingPage() {
                     >
                       {featured && (
                         <span className="sysdark:bg-[#2563EB] absolute -top-3 left-7 rounded-full bg-[#1D4ED8] px-3 py-1 text-[11px] font-semibold text-white">
-                          Được chọn nhiều
+                          Phổ biến · Nhà máy KCN / FDI
                         </span>
                       )}
-                      <h3
-                        className={`text-sm font-semibold tracking-wide uppercase ${
+
+                      <div className="flex items-center justify-between gap-2">
+                        <h3
+                          className={`text-sm font-semibold tracking-wide uppercase ${
+                            dark
+                              ? "sysdark:text-[#8FB8FF] text-[#BFDBFE]"
+                              : "sysdark:text-[#6EA8FF] text-[#1D4ED8]"
+                          }`}
+                        >
+                          {p.name}
+                        </h3>
+                        {p.listPrice ? (
+                          <span className="sysdark:border-[#1E3A8A] sysdark:bg-[#16203A] sysdark:text-[#93C5FD] rounded border border-[#BFDBFE] bg-[#EFF6FF] px-2 py-0.5 font-mono text-[10px] font-semibold text-[#1D4ED8]">
+                            Ưu đãi triển khai
+                          </span>
+                        ) : null}
+                      </div>
+
+                      <p
+                        className={`tnum mt-1.5 font-mono text-xs font-medium ${
                           dark
-                            ? "sysdark:text-[#8FB8FF] text-[#BFDBFE]"
-                            : "sysdark:text-[#6EA8FF] text-[#1D4ED8]"
+                            ? "sysdark:text-[#93C5FD] text-[#BFDBFE]"
+                            : "sysdark:text-[#A3AAB8] text-[#4B5565]"
                         }`}
                       >
-                        {plan.name}
-                      </h3>
+                        {p.scaleTag}
+                      </p>
 
-                      <div className="mt-4 flex items-baseline gap-1">
-                        <span className="tnum text-3xl font-bold tracking-tight">
-                          {plan.price}
-                        </span>
-                        {plan.unit && (
+                      <div className="mt-3.5 min-h-[20px]">
+                        {p.listPrice ? (
                           <span
-                            className={`text-sm ${dark ? "sysdark:text-[#8FB8FF] text-[#BFDBFE]" : "sysdark:text-[#8B93A3] text-[#5B6475]"}`}
+                            className={`tnum font-mono text-xs ${
+                              dark
+                                ? "text-[#BFDBFE]/80"
+                                : "sysdark:text-[#8B93A3] text-[#5B6475]"
+                            }`}
                           >
-                            {plan.unit}
+                            Niêm yết{" "}
+                            <span className="line-through">{p.listPrice}</span>
+                          </span>
+                        ) : (
+                          <span
+                            className={`font-mono text-xs ${
+                              dark
+                                ? "sysdark:text-[#93C5FD]/85 text-[#BFDBFE]/85"
+                                : "sysdark:text-[#8B93A3] text-[#5B6475]"
+                            }`}
+                          >
+                            Hạ tầng &amp; tích hợp theo khảo sát
                           </span>
                         )}
                       </div>
+
+                      <div className="mt-0.5 flex flex-wrap items-baseline gap-x-1 gap-y-0.5">
+                        <span className="tnum text-3xl font-bold tracking-tight">
+                          {p.price.startsWith("Từ ") ? (
+                            <>
+                              <span className="mr-1 text-base font-semibold tracking-normal">
+                                Từ
+                              </span>
+                              {p.price.slice(3)}
+                            </>
+                          ) : (
+                            p.price
+                          )}
+                        </span>
+                        {p.unit && (
+                          <span
+                            className={`text-sm ${dark ? "sysdark:text-[#8FB8FF] text-[#BFDBFE]" : "sysdark:text-[#8B93A3] text-[#5B6475]"}`}
+                          >
+                            {p.unit}
+                          </span>
+                        )}
+                      </div>
+
                       <p
-                        className={`mt-2 text-sm ${dark ? "sysdark:text-[#A3AAB8] text-[#C7D7F5]" : "sysdark:text-[#8B93A3] text-[#5B6475]"}`}
+                        className={`mt-2 text-sm leading-relaxed ${dark ? "sysdark:text-[#A3AAB8] text-[#C7D7F5]" : "sysdark:text-[#8B93A3] text-[#5B6475]"}`}
                       >
-                        {plan.note}
+                        {p.note}
                       </p>
 
+                      <div
+                        className={`mt-4 rounded-lg border px-3.5 py-2.5 text-xs leading-snug font-medium ${
+                          dark
+                            ? "border-white/15 bg-white/5 text-[#DBEAFE]"
+                            : featured
+                              ? "sysdark:border-[#1E3A8A] sysdark:bg-[#16203A] sysdark:text-[#BFDBFE] border-[#BFDBFE] bg-[#EFF6FF] text-[#1E3A8A]"
+                              : "sysdark:border-[#1F232A] sysdark:bg-[#16191E] sysdark:text-[#E6E9EF] border-[#E3E7EE] bg-[#F7F9FC] text-[#1F2937]"
+                        }`}
+                      >
+                        {p.setupBonus}
+                      </div>
+
                       <ul
-                        className={`mt-6 flex-1 space-y-2.5 border-t pt-6 text-sm ${
+                        className={`mt-5 flex-1 space-y-2.5 border-t pt-5 text-sm ${
                           dark
                             ? "sysdark:text-[#C9CED8] border-white/10 text-[#E3EDFF]"
                             : "sysdark:border-[#1F232A] sysdark:text-[#E6E9EF] border-[#E3E7EE] text-[#1F2937]"
                         }`}
                       >
-                        {plan.items.map((item) => (
+                        {p.items.map((item) => (
                           <li key={item} className="flex items-start gap-2.5">
                             <Check
                               className={`mt-0.5 h-4 w-4 shrink-0 ${dark ? "text-[#60A5FA]" : "sysdark:text-[#6EA8FF] text-[#1D4ED8]"}`}
@@ -640,26 +711,61 @@ export function GoEatLandingPage() {
                         ))}
                       </ul>
 
-                      <a
-                        href="#dang-ky"
-                        onClick={() => setPlan(plan.name)}
-                        className={`mt-7 inline-flex min-h-[44px] items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold transition-colors ${
-                          dark
-                            ? "sysdark:text-[#08090B] sysdark:hover:bg-[#E6E9EF] bg-white text-[#0A1633] hover:bg-[#EAF1FF]"
-                            : featured
-                              ? "sysdark:bg-[#2563EB] sysdark:hover:bg-[#3B82F6] bg-[#1D4ED8] text-white hover:bg-[#1E40AF]"
-                              : "sysdark:border-[#343A44] sysdark:text-[#E6E9EF] sysdark:hover:border-[#3B82F6] border border-[#C9D0DC] text-[#111827] hover:border-[#1D4ED8]"
-                        }`}
-                      >
-                        {plan.cta}
-                      </a>
+                      {p.id === "standard" ? (
+                        <Link
+                          href={TRY_DEMO_HREF}
+                          className="sysdark:border-[#343A44] sysdark:text-[#E6E9EF] sysdark:hover:border-[#3B82F6] mt-7 inline-flex min-h-[44px] items-center justify-center rounded-full border border-[#C9D0DC] px-5 py-2.5 text-sm font-semibold text-[#111827] transition-colors hover:border-[#1D4ED8] hover:text-[#1D4ED8]"
+                        >
+                          {p.cta}
+                        </Link>
+                      ) : (
+                        <a
+                          href="#dang-ky"
+                          onClick={() => setPlan(p.name)}
+                          className={`mt-7 inline-flex min-h-[44px] items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold transition-colors ${
+                            dark
+                              ? "sysdark:text-[#08090B] sysdark:hover:bg-[#E6E9EF] bg-white text-[#0A1633] hover:bg-[#EAF1FF]"
+                              : "sysdark:bg-[#2563EB] sysdark:hover:bg-[#3B82F6] bg-[#1D4ED8] text-white hover:bg-[#1E40AF]"
+                          }`}
+                        >
+                          {p.cta}
+                        </a>
+                      )}
                     </div>
                   )
                 })}
               </div>
 
-              <p className="sysdark:text-[#8B93A3] mt-8 text-center text-sm text-[#5B6475]">
-                Chưa chắc gói nào hợp?{" "}
+              {/* Khung hiệu quả chi phí (ROI) & Hồ sơ giải pháp trình ký */}
+              <div className="sysdark:border-[#1F232A] sysdark:bg-[#0E1014] mt-8 flex flex-col justify-between gap-4 rounded-xl border border-[#E3E7EE] bg-[#F7F9FC] p-5 sm:p-6 lg:flex-row lg:items-center">
+                <p className="tnum sysdark:text-[#C9CED8] text-sm leading-relaxed text-[#1F2937]">
+                  <b className="sysdark:text-white font-semibold text-[#0B1220]">
+                    Hiệu quả thu hồi vốn:{" "}
+                  </b>
+                  Chỉ cần chặn thất thoát 10–15 suất ăn ảo mỗi ngày, nhà máy đã
+                  tiết kiệm 7–10 triệu đồng/tháng — vượt xa chi phí vận hành hệ
+                  thống.
+                </p>
+                <Link
+                  href={BROCHURE_HREF}
+                  className="sysdark:border-[#262B33] sysdark:bg-[#111317] sysdark:text-[#6EA8FF] sysdark:hover:border-[#3B82F6] inline-flex shrink-0 items-center gap-2 rounded-lg border border-[#C9D8F5] bg-white px-4 py-2.5 text-xs font-semibold text-[#1D4ED8] transition-colors hover:border-[#1D4ED8] hover:bg-[#EFF6FF]"
+                >
+                  <FileSpreadsheet className="h-4 w-4 shrink-0" />
+                  Tải Hồ sơ giải pháp &amp; Biểu phí PDF (A4) để trình ký Ban
+                  Giám Đốc
+                  <ArrowRight className="h-3.5 w-3.5 shrink-0" />
+                </Link>
+              </div>
+
+              <p className="sysdark:text-[#8B93A3] mt-6 text-center text-sm text-[#5B6475]">
+                Cần đối chiếu chi tiết từng hạng mục?{" "}
+                <Link
+                  href={`${FEATURES_HREF}#so-sanh`}
+                  className="sysdark:text-[#6EA8FF] font-semibold text-[#1D4ED8] hover:underline"
+                >
+                  Xem bảng so sánh 3 gói
+                </Link>
+                {" · "}
                 <Link
                   href={TRY_DEMO_HREF}
                   className="sysdark:text-[#6EA8FF] font-semibold text-[#1D4ED8] hover:underline"
@@ -671,7 +777,7 @@ export function GoEatLandingPage() {
                   href="#dang-ky"
                   className="sysdark:text-[#6EA8FF] font-semibold text-[#1D4ED8] hover:underline"
                 >
-                  nhắn Zalo để được tư vấn
+                  nhắn Zalo khảo sát
                 </a>
               </p>
             </div>

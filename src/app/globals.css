@@ -1,12 +1,15 @@
 @import "tailwindcss";
 
 /* Công tắc giao diện (components/goeat-theme-toggle.tsx) ghi `data-goeat-theme`
-   lên <html>: "dark" = luôn tối, "light" = luôn sáng, không có = theo máy. */
+   lên <html>: "dark" = luôn tối, "light" = luôn sáng, không có = theo máy.
+   Khi in ra giấy / xuất PDF (`@media print`), luôn tắt biến thể tối để bản in nền trắng. */
 @custom-variant sysdark {
-  &:where(:root[data-goeat-theme="dark"] *) {
-    @slot;
+  @media not print {
+    &:where(:root[data-goeat-theme="dark"] *) {
+      @slot;
+    }
   }
-  @media (prefers-color-scheme: dark) {
+  @media not print and (prefers-color-scheme: dark) {
     &:where(:root:not([data-goeat-theme="light"]) *) {
       @slot;
     }
@@ -34,4 +37,36 @@ html {
 /* Số canh cột đều */
 .tnum {
   font-variant-numeric: tabular-nums;
+}
+
+/* Quy chuẩn in ấn / xuất PDF A4 cho Hồ sơ giải pháp (/ho-so-giai-phap) */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #0b1220 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .goeat-no-print,
+  header,
+  footer {
+    display: none !important;
+  }
+
+  .goeat-print-break {
+    break-before: page;
+    page-break-before: always;
+  }
+
+  .goeat-avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
 }

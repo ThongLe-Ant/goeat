@@ -24,6 +24,9 @@ import { GOEAT_THEME_SCRIPT, GoEatThemeToggle } from "./goeat-theme-toggle"
  * ========================================================================== */
 
 export const FEATURES_HREF = "/chuc-nang"
+export const GUIDES_HREF = "/cam-nang"
+export const BROCHURE_HREF = "/ho-so-giai-phap"
+export const PRIVACY_HREF = "/chinh-sach-bao-mat"
 
 export const CONTACT = {
   phone: "0396870644",
@@ -103,7 +106,7 @@ export function CubeBackdrop({
   return (
     <svg
       aria-hidden
-      className={`pointer-events-none absolute inset-0 h-full w-full ${light ? "text-[#1D4ED8] sysdark:text-[#6EA8FF] opacity-40 sysdark:opacity-30" : "text-white sysdark:opacity-60"}`}
+      className={`pointer-events-none absolute inset-0 h-full w-full ${light ? "sysdark:text-[#6EA8FF] sysdark:opacity-30 text-[#1D4ED8] opacity-40" : "sysdark:opacity-60 text-white"}`}
     >
       <defs>
         <pattern
@@ -139,7 +142,7 @@ export function CubeBackdrop({
             key={`${col}-${half}`}
             d={cubeTopAt(
               col * CUBE_TILE_W + (half % 2 ? CUBE_TILE_W / 2 : 0),
-              (half * CUBE_TILE_H) / 2
+              (half * CUBE_TILE_H) / 2,
             )}
             fillOpacity={opacity}
           />
@@ -159,7 +162,7 @@ export function GuideRails() {
       aria-hidden
       className="pointer-events-none absolute inset-0 z-10 hidden lg:block"
     >
-      <div className="mx-auto h-full max-w-6xl border-x border-[#DCE2EC] sysdark:border-[#1A1D23]" />
+      <div className="sysdark:border-[#1A1D23] mx-auto h-full max-w-6xl border-x border-[#DCE2EC]" />
     </div>
   )
 }
@@ -201,10 +204,10 @@ export function Eyebrow({
 }) {
   return (
     <p
-      className={`inline-flex items-center gap-2 font-mono text-xs font-medium tracking-[0.08em] text-[#1D4ED8] uppercase sysdark:text-[#6EA8FF] ${className}`}
+      className={`sysdark:text-[#6EA8FF] inline-flex items-center gap-2 font-mono text-xs font-medium tracking-[0.08em] text-[#1D4ED8] uppercase ${className}`}
     >
       {index ? (
-        <span className="text-[#9AA8C2] sysdark:text-[#4B5363]">[{index}]</span>
+        <span className="sysdark:text-[#4B5363] text-[#9AA8C2]">[{index}]</span>
       ) : (
         <span className="h-1.5 w-1.5 bg-current" />
       )}
@@ -219,57 +222,133 @@ export function SoftGlow({ className = "" }: { className?: string }) {
   return (
     <div
       aria-hidden
-      className={`pointer-events-none absolute -z-10 rounded-full bg-[radial-gradient(closest-side,rgba(29,78,216,0.24),transparent)] sysdark:bg-[radial-gradient(closest-side,rgba(37,99,235,0.32),transparent)] blur-2xl ${className || "-inset-x-12 -inset-y-16"}`}
+      className={`sysdark:bg-[radial-gradient(closest-side,rgba(37,99,235,0.32),transparent)] pointer-events-none absolute -z-10 rounded-full bg-[radial-gradient(closest-side,rgba(29,78,216,0.24),transparent)] blur-2xl ${className || "-inset-x-12 -inset-y-16"}`}
     />
   )
 }
 
 export const PLANS = [
   {
-    id: "co-ban",
-    name: "Cơ bản",
+    id: "standard",
+    name: "Standard",
+    scaleTag: "Dưới 300 nhân sự · 1 bếp / 1–2 quầy",
+    listPrice: "1.500.000đ",
     price: "1.000.000đ",
     unit: "/tháng",
-    note: "Dùng ngay chức năng cơ bản, không tuỳ chỉnh.",
+    setupBonus:
+      "Miễn phí khởi tạo danh sách nhân sự & hướng dẫn quầy phát cơm (2.000.000đ)",
+    note: "Chuẩn hóa đặt món tuần, tự chốt số báo bếp & quẹt thẻ chống nhận trùng.",
     items: [
-      "Chọn món theo tuần",
-      "Tự chốt số báo bếp",
-      "Quẹt thẻ nhận cơm tại quầy",
-      "Báo cáo và xuất Excel",
+      "Chọn món theo tuần trên điện thoại & đặt thay",
+      "Tự chốt số suất báo bếp tách mặn, chay, thay thế",
+      "Quẹt thẻ nhận cơm tại quầy, chặn nhận trùng",
+      "Báo cáo suất ăn theo ngày, ca & xuất Excel A4",
     ],
-    cta: "Chọn gói Cơ bản",
+    cta: "Dùng thử 7 ngày",
     tone: "plain",
   },
   {
-    id: "tuy-bien",
-    name: "Tuỳ biến",
+    id: "professional",
+    name: "Professional",
+    scaleTag: "300 – 1.000 nhân sự · Nhà máy KCN / FDI",
+    listPrice: "3.500.000đ",
     price: "2.500.000đ",
     unit: "/tháng",
-    note: "Chức năng cơ bản, chỉnh theo quy trình của đơn vị.",
+    setupBonus:
+      "Miễn phí cấu hình ca gãy/ca đêm, mẫu đối soát riêng & đào tạo quầy (4.500.000đ)",
+    note: "Kiểm soát toàn diện nhiều ca ăn, thẻ tạm quên thẻ, khách & suất tăng ca.",
     items: [
-      "Toàn bộ gói Cơ bản",
-      "Ca ăn, giờ chốt, nhóm món theo đơn vị",
-      "Mẫu báo cáo theo yêu cầu",
+      "Toàn bộ nghiệp vụ gói Standard",
+      "Cấu hình ca gãy, ca đêm, giờ chốt riêng & nhập tăng ca",
+      "Cấp thẻ tạm quên thẻ, phát ngoại lệ người mới & khách",
+      "Mẫu biên bản đối soát cuối kỳ theo biểu mẫu nhà máy",
     ],
-    cta: "Chọn gói Tuỳ biến",
+    cta: "Nhận báo giá & Demo",
     tone: "featured",
   },
   {
-    id: "nang-cao",
-    name: "Nâng cao",
-    price: "Liên hệ",
-    unit: "",
-    note: "Chức năng nâng cao, báo giá theo nhu cầu.",
+    id: "enterprise",
+    name: "Enterprise",
+    scaleTag: "Trên 1.000 nhân sự · Đa nhà máy / Thầu bếp",
+    listPrice: "",
+    price: "Từ 4.900.000đ",
+    unit: "/tháng",
+    setupBonus:
+      "Máy chủ độc lập · Tích hợp API Máy chấm công / HRM & Căn-tin VietQR",
+    note: "Đồng bộ tự động danh sách đi làm mỗi ngày, Kiosk xưởng & Căn-tin QR.",
     items: [
-      "Kết nối máy chấm công, phần mềm nhân sự",
-      "Căn-tin nội bộ, thanh toán QR",
-      "Màn hình cảm ứng tại xưởng",
-      "Nhiều nhà máy, nhiều bếp",
+      "Toàn bộ nghiệp vụ gói Professional",
+      "Tích hợp API máy chấm công & phần mềm nhân sự (HRM)",
+      "Căn-tin nội bộ đặt trước & thanh toán mã VietQR",
+      "Kiosk cảm ứng tại xưởng · Quản trị đa nhà máy / nhiều bếp",
     ],
-    cta: "Liên hệ báo giá",
+    cta: "Liên hệ khảo sát",
     tone: "dark",
   },
 ] as const
+
+/** Bảng đối chiếu phạm vi ở /chuc-nang và /ho-so-giai-phap: mỗi dòng một
+ * hạng mục nghiệp vụ, mỗi cột ứng với một gói theo đúng thứ tự PLANS. */
+export const PLAN_MATRIX: ReadonlyArray<{
+  label: string
+  cells: ReadonlyArray<boolean | string>
+}> = [
+  {
+    label: "Quy mô vận hành khuyến nghị",
+    cells: [
+      "Dưới 300 nhân sự",
+      "300 – 1.000 nhân sự",
+      "Trên 1.000 nhân sự / Đa bếp",
+    ],
+  },
+  {
+    label: "Chọn món theo tuần trên điện thoại & quản lý đặt thay",
+    cells: [true, true, true],
+  },
+  {
+    label: "Tự động chốt số suất báo bếp theo ca (mặn, chay, món thay thế)",
+    cells: [true, true, true],
+  },
+  {
+    label: "Quẹt thẻ nhân viên nhận cơm (< 0,5s), chặn nhận trùng trong ca",
+    cells: [true, true, true],
+  },
+  {
+    label: "Báo cáo suất ăn theo ngày, ca & xuất Excel A4 tiêu chuẩn",
+    cells: [true, true, true],
+  },
+  {
+    label:
+      "Cấu hình ca gãy, ca đêm, giờ chốt riêng & nhập suất phát sinh tăng ca",
+    cells: ["Ca cơ bản", true, true],
+  },
+  {
+    label: "Cấp thẻ tạm quên thẻ, phát ngoại lệ người mới & khách có ghi lý do",
+    cells: ["Phát tay cơ bản", true, true],
+  },
+  {
+    label:
+      "Tuỳ biến mẫu biên bản đối soát cuối kỳ HCNS – Kế toán – Nhà thầu bếp",
+    cells: [false, true, true],
+  },
+  {
+    label:
+      "Căn-tin nội bộ đặt trước theo khung giờ & thanh toán tự động VietQR",
+    cells: [false, false, true],
+  },
+  {
+    label: "Kết nối API hai chiều với Máy chấm công / phần mềm nhân sự (HRM)",
+    cells: [false, false, true],
+  },
+  {
+    label: "Màn hình Kiosk cảm ứng tại xưởng & quản trị đa nhà máy / nhiều bếp",
+    cells: [false, false, true],
+  },
+  {
+    label: "Hạ tầng dữ liệu & tài khoản dùng thử miễn phí 7 ngày",
+    cells: ["CSDL độc lập", "CSDL độc lập", "Máy chủ riêng / On-premise"],
+  },
+]
 
 /* ---------- Chức năng theo từng bước ----------
  * Dùng cho dòng thời gian ở trang chủ và các mục ở trang /chuc-nang.
@@ -390,7 +469,7 @@ export const FEATURE_MODULES = [
     icon: ShoppingBag,
     name: "Căn-tin",
     when: "Giờ nghỉ",
-    addon: "Gói Nâng cao",
+    addon: "Gói Enterprise",
     brief: "Đặt trước đồ ăn thêm, trả bằng mã QR.",
     title: "Căn-tin nội bộ, trả tiền bằng mã QR",
     text: "Đặt trước đồ ăn thêm, nước uống; chọn giờ nhận và thanh toán bằng mã QR ngân hàng.",
@@ -446,23 +525,27 @@ export const FEATURE_MODULES = [
 export const FAQ = [
   {
     q: "GoEat là phần mềm gì?",
-    a: "GoEat là phần mềm quản lý suất ăn công nghiệp và căn-tin nội bộ: người ăn chọn món theo tuần, bếp nhận số suất theo từng ca, quầy quẹt thẻ phát cơm và cuối tháng đối soát bằng Excel.",
+    a: "GoEat là phần mềm quản lý suất ăn công nghiệp và căn-tin nội bộ cho nhà máy, khu công nghiệp và đơn vị thầu bếp: công nhân chọn món theo tuần, hệ thống tự chốt số báo bếp theo từng ca, quầy quẹt thẻ nhân viên phát cơm dưới 0,5 giây và cuối kỳ xuất bảng đối soát Excel A4.",
   },
   {
-    q: "Giá GoEat bao nhiêu?",
-    a: "Gói Cơ bản 1.000.000đ/tháng, gói Tuỳ biến 2.500.000đ/tháng. Gói Nâng cao báo giá theo nhu cầu.",
+    q: "Biểu phí GoEat tính theo quy mô nhân sự như thế nào?",
+    a: "GoEat có 3 gói rõ ràng: gói Standard 1.000.000đ/tháng (niêm yết 1.500.000đ, dưới 300 nhân sự), gói Professional 2.500.000đ/tháng (niêm yết 3.500.000đ, từ 300 – 1.000 nhân sự) và gói Enterprise từ 4.900.000đ/tháng cho nhà máy trên 1.000 nhân sự hoặc chuỗi thầu bếp đa điểm. Hiện các gói được miễn phí 100% chi phí khởi tạo và đào tạo ban đầu (từ 2.000.000đ đến 4.500.000đ).",
   },
   {
-    q: "Người không dùng điện thoại có đặt món được không?",
-    a: "Được. Quản lý đặt thay cho người không có điện thoại ngay trên màn hình đặt món.",
+    q: "Làm sao để dùng thử và lấy tài liệu trình Ban Giám đốc?",
+    a: "Bạn chỉ cần nhập email tại trang Dùng thử (/dung-thu) để nhận ngay tài khoản demo riêng dùng 7 ngày trên dữ liệu mẫu đầy đủ, không cần cài đặt. Đồng thời có thể tải hoặc in Hồ sơ giải pháp & Biểu phí định dạng A4/PDF tại trang /ho-so-giai-phap để trình ký.",
   },
   {
-    q: "Quên thẻ, người mới hoặc khách thì nhận cơm thế nào?",
-    a: "Quầy cấp thẻ tạm trong ca hoặc phát tay ngay trên màn hình. Lượt nào cũng ghi lý do để cuối tháng lọc ra đối soát.",
+    q: "Công nhân không dùng điện thoại thông minh có đặt món được không?",
+    a: "Được. Tổ trưởng hoặc cán bộ phụ trách đặt thay theo tổ/chuyền ngay trên màn hình đặt món. Với gói Enterprise, nhà máy có thể bố trí thêm màn hình Kiosk cảm ứng tại xưởng để công nhân quẹt thẻ chọn món trực tiếp.",
   },
   {
-    q: "Có kết nối với máy chấm công, phần mềm nhân sự không?",
-    a: "Có, ở gói Nâng cao. Hệ thống nhân sự gửi danh sách người ăn mỗi ngày qua API, quầy và bếp dùng ngay, không cần nhập tay.",
+    q: "Công nhân quên thẻ, nhân viên mới chưa có thẻ hoặc khách tới thăm ăn cơm thế nào?",
+    a: "Quầy phát cơm cấp thẻ tạm có hiệu lực trong ca hoặc phát ngoại lệ trực tiếp trên màn hình cảm ứng. Mỗi lượt đều ghi nhận rõ lý do (quên thẻ, nhân viên mới, khách, tăng ca) để cuối tháng lọc riêng khi đối soát ba bên.",
+  },
+  {
+    q: "GoEat có kết nối với máy chấm công và phần mềm nhân sự (HRM) không?",
+    a: "Có, trong gói Enterprise. Hệ thống nhân sự hoặc máy chấm công đồng bộ tự động danh sách đi làm thực tế mỗi ngày qua API, giúp cập nhật nhân sự mới và khoá suất nghỉ phép mà không phải nhập file thủ công.",
   },
 ] as const
 
@@ -470,6 +553,8 @@ export const NAV_LINKS = [
   { href: "/#san-pham", label: "Sản phẩm" },
   { href: FEATURES_HREF, label: "Chức năng" },
   { href: "/#bang-gia", label: "Bảng giá" },
+  { href: GUIDES_HREF, label: "Cẩm nang" },
+  { href: BROCHURE_HREF, label: "Hồ sơ PDF" },
 ] as const
 
 /** `wide`: trang chủ có khung ảnh rộng 1440px, logo thẳng mép với khung đó;
@@ -487,7 +572,7 @@ export function GoEatHeader({
       <script dangerouslySetInnerHTML={{ __html: GOEAT_THEME_SCRIPT }} />
       <Link
         href="/"
-        className="flex shrink-0 items-center gap-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1D4ED8] sysdark:focus-visible:outline-[#6EA8FF]"
+        className="sysdark:focus-visible:outline-[#6EA8FF] flex shrink-0 items-center gap-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#1D4ED8]"
       >
         <Image
           src="/images/logos/goeat_logo.png"
@@ -500,14 +585,14 @@ export function GoEatHeader({
 
       <nav
         aria-label="Điều hướng trang giới thiệu"
-        className="hidden items-center gap-7 text-sm font-medium text-[#3B4555] sysdark:text-[#C9CED8] md:flex"
+        className="sysdark:text-[#C9CED8] hidden items-center gap-5 text-sm font-medium text-[#3B4555] md:flex lg:gap-7"
       >
         {NAV_LINKS.map((l) => (
           <Link
             key={l.href}
             href={l.href}
             aria-current={active === l.label ? "page" : undefined}
-            className="hover:text-[#172554] sysdark:hover:text-white aria-[current=page]:font-semibold aria-[current=page]:text-[#1D4ED8] sysdark:aria-[current=page]:text-[#6EA8FF]"
+            className="sysdark:hover:text-white sysdark:aria-[current=page]:text-[#6EA8FF] hover:text-[#172554] aria-[current=page]:font-semibold aria-[current=page]:text-[#1D4ED8]"
           >
             {l.label}
           </Link>
@@ -518,14 +603,14 @@ export function GoEatHeader({
         <GoEatThemeToggle className="hidden md:inline-flex" />
         <Link
           href="/#dang-ky"
-          className="hidden rounded-full px-3 py-2 text-sm font-semibold text-[#111827] sysdark:text-[#E6E9EF] hover:text-[#1D4ED8] sysdark:hover:text-[#6EA8FF] md:inline-flex"
+          className="sysdark:text-[#E6E9EF] sysdark:hover:text-[#6EA8FF] hidden rounded-full px-3 py-2 text-sm font-semibold text-[#111827] hover:text-[#1D4ED8] lg:inline-flex"
         >
           Liên hệ tư vấn
         </Link>
         <Link
           href={TRY_DEMO_HREF}
           aria-current={active === "Dùng thử" ? "page" : undefined}
-          className="inline-flex items-center rounded-full bg-[#1D4ED8] sysdark:bg-[#2563EB] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1E40AF] sysdark:hover:bg-[#3B82F6] aria-[current=page]:ring-2 aria-[current=page]:ring-[#1D4ED8]/30 aria-[current=page]:ring-offset-2"
+          className="sysdark:bg-[#2563EB] sysdark:hover:bg-[#3B82F6] inline-flex items-center rounded-full bg-[#1D4ED8] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1E40AF] aria-[current=page]:ring-2 aria-[current=page]:ring-[#1D4ED8]/30 aria-[current=page]:ring-offset-2"
         >
           Dùng thử miễn phí
         </Link>
@@ -544,7 +629,7 @@ const TRY_DEMO_POINTS = [
 /** Dải mời dùng thử demo — đặt giữa các trang để khách luôn thấy lối vào. */
 export function TryDemoBand() {
   return (
-    <section className="relative overflow-hidden bg-[#1D4ED8] sysdark:bg-[#12204A] py-12 lg:py-14">
+    <section className="sysdark:bg-[#12204A] relative overflow-hidden bg-[#1D4ED8] py-12 lg:py-14">
       <div className="relative mx-auto flex max-w-6xl flex-col items-start gap-7 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
         <div>
           <p className="font-mono text-xs font-medium tracking-[0.08em] text-[#BFDBFE] uppercase">
@@ -552,7 +637,7 @@ export function TryDemoBand() {
           </p>
           <h2
             style={HEADING_STYLE}
-            className="mt-3 font-medium tracking-[-0.02em] text-white [text-wrap:balance]"
+            className="mt-3 font-medium tracking-[-0.02em] [text-wrap:balance] text-white"
           >
             Tự tay đặt món, quẹt thẻ, xem báo cáo trên bản demo chạy thật
           </h2>
@@ -579,12 +664,15 @@ export function TryDemoBand() {
 
 export function GoEatFooter() {
   return (
-    <footer className="bg-[#0A1633] sysdark:border-t sysdark:border-[#1F232A] sysdark:bg-[#08090B] py-8 text-xs text-[#BFDBFE] sysdark:text-[#8FB8FF]">
+    <footer className="sysdark:border-t sysdark:border-[#1F232A] sysdark:bg-[#08090B] sysdark:text-[#8FB8FF] bg-[#0A1633] py-8 text-xs text-[#BFDBFE]">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <span>© 2026 GoEat · Suất ăn công nghiệp &amp; căn-tin</span>
-        <div className="flex flex-wrap items-center gap-4">
+        <span>© 2026 GoEat · Suất ăn công nghiệp &amp; căn-tin nội bộ</span>
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <a href={CONTACT.zalo} className="tnum hover:text-white">
             Nhắn Zalo
+          </a>
+          <a href={`tel:${CONTACT.phone}`} className="tnum hover:text-white">
+            {CONTACT.phoneLabel}
           </a>
           <a href={`mailto:${CONTACT.email}`} className="hover:text-white">
             {CONTACT.email}
@@ -592,8 +680,17 @@ export function GoEatFooter() {
           <Link href={FEATURES_HREF} className="hover:text-white">
             Chức năng
           </Link>
+          <Link href={GUIDES_HREF} className="hover:text-white">
+            Cẩm nang
+          </Link>
+          <Link href={BROCHURE_HREF} className="hover:text-white">
+            Hồ sơ PDF
+          </Link>
           <Link href={TRY_DEMO_HREF} className="hover:text-white">
             Dùng thử demo
+          </Link>
+          <Link href={PRIVACY_HREF} className="hover:text-white">
+            Chính sách bảo mật
           </Link>
         </div>
       </div>
