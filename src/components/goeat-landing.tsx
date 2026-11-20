@@ -15,11 +15,13 @@ import {
   Monitor,
   Network,
   Phone,
+  Play,
   Maximize2,
   ScanLine,
   ShieldCheck,
   ShoppingBag,
   Users,
+  Volume2,
   X,
 } from "lucide-react"
 
@@ -137,11 +139,20 @@ const PLAN_OPTIONS = PLANS.map((p) => p.name)
 /** Dòng thời gian trang chủ: căn-tin là phần cộng thêm nên ghi riêng bên dưới. */
 const TIMELINE = FEATURE_MODULES.filter((m) => m.id !== "can-tin")
 
+const VIDEO_CHAPTERS = [
+  { sec: 0, time: "00:00", label: "Đặt món cả tuần" },
+  { sec: 13.2, time: "00:13", label: "Tự chốt báo bếp" },
+  { sec: 21.6, time: "00:22", label: "Quẹt thẻ nhận cơm" },
+  { sec: 29.0, time: "00:29", label: "Thẻ tạm & Ngoại lệ" },
+  { sec: 36.1, time: "00:36", label: "Căn-tin QR & Đối soát" },
+  { sec: 44.3, time: "00:44", label: "Dùng thử Demo 7 ngày" },
+] as const
+
 /* ---------- Phần đầu: chữ một hàng, ảnh sản phẩm to ở giữa ----------
  * Khung ảnh tự co theo chiều cao màn hình để vào trang là thấy trọn ảnh,
  * màn cao thì ảnh to ra tới hết bề ngang. Tab chức năng nằm trên thanh khung. */
 
-function ProductHero() {
+function ProductHero({ onWatchVideo }: { onWatchVideo: () => void }) {
   const [index, setIndex] = useState(0)
   const [paused, setPaused] = useState(false)
   const [reduceMotion, setReduceMotion] = useState(false)
@@ -216,24 +227,35 @@ function ProductHero() {
               </li>
             ))}
           </ul>
-          <div className="mt-7 flex flex-wrap items-center gap-3">
+          <div className="mt-7 flex flex-wrap items-center gap-2.5">
             <Link
               href={TRY_DEMO_HREF}
-              className="sysdark:text-[#08090B] inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-[#0B2A5B] shadow-sm transition-colors hover:bg-[#EAF1FF]"
+              className="sysdark:text-[#08090B] inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold text-[#0B2A5B] shadow-sm transition-colors hover:bg-[#EAF1FF]"
             >
               Dùng thử miễn phí 7 ngày
               <ArrowRight className="h-4 w-4" />
             </Link>
             <a
-              href="#bang-gia"
-              className="sysdark:hover:bg-white/5 inline-flex min-h-[44px] items-center justify-center rounded-full border border-white/40 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+              href="#video-gioi-thieu"
+              onClick={(e) => {
+                e.preventDefault()
+                onWatchVideo()
+              }}
+              className="sysdark:hover:bg-white/15 inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-white/45 bg-white/10 px-4 py-2.5 text-sm font-semibold text-white backdrop-blur-xs transition-colors hover:bg-white/15"
             >
-              Xem bảng giá
+              <Play className="h-3.5 w-3.5 fill-current" />
+              Xem video (00:53)
             </a>
           </div>
-          <p className="sysdark:text-[#8FB8FF] mt-3 text-xs text-[#BFDBFE]">
-            Chỉ cần email, nhận tài khoản ngay, không cần cài đặt.
-          </p>
+          <div className="mt-3">
+            <a
+              href="#bang-gia"
+              className="sysdark:text-[#8FB8FF] inline-flex items-center gap-1.5 text-xs font-medium text-[#BFDBFE] hover:text-white hover:underline"
+            >
+              Xem biểu phí theo quy mô nhà máy · miễn phí 100% khởi tạo tại quầy
+              <ArrowRight className="h-3.5 w-3.5" />
+            </a>
+          </div>
         </div>
 
         {/* Khung ảnh sản phẩm */}
@@ -414,11 +436,205 @@ function ProductHero() {
   )
 }
 
+function GoEatVideoSection({
+  videoRef,
+  started,
+  onStart,
+}: {
+  videoRef: React.RefObject<HTMLVideoElement | null>
+  started: boolean
+  onStart: () => void
+}) {
+  const [activeChapter, setActiveChapter] = useState(0)
+  const trackedRef = useRef({ play: false, half: false, done: false })
+
+  const handleJump = (idx: number, sec: number) => {
+    setActiveChapter(idx)
+    onStart()
+    const el = videoRef.current
+    if (!el) return
+    el.currentTime = sec
+    el.play().catch(() => {})
+  }
+
+  const handlePlay = () => {
+    onStart()
+    if (trackedRef.current.play) return
+    trackedRef.current.play = true
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "goeat_video_play", {
+        event_category: "engagement",
+        event_label: "goeat_16x9",
+      })
+    }
+    if (typeof window.fbq === "function") {
+      window.fbq("track", "ViewContent", {
+        content_category: "product_video",
+        content_ids: ["goeat-gioi-thieu-16x9"],
+      })
+    }
+  }
+
+  const handleTimeUpdate = () => {
+    const el = videoRef.current
+    if (!el) return
+    const t = el.currentTime
+    let idx = 0
+    for (let i = VIDEO_CHAPTERS.length - 1; i >= 0; i--) {
+      if (t >= VIDEO_CHAPTERS[i].sec - 0.15) {
+        idx = i
+        break
+      }
+    }
+    if (idx !== activeChapter) setActiveChapter(idx)
+
+    if (!trackedRef.current.half && t >= 26.5) {
+      trackedRef.current.half = true
+      if (typeof window.gtag === "function") {
+        window.gtag("event", "goeat_video_50pct", {
+          event_category: "engagement",
+          event_label: "goeat_16x9",
+        })
+      }
+      if (typeof window.fbq === "function") {
+        window.fbq("trackCustom", "VideoWatched50Pct", {
+          video_id: "goeat-gioi-thieu-16x9",
+        })
+      }
+    }
+  }
+
+  const handleEnded = () => {
+    if (trackedRef.current.done) return
+    trackedRef.current.done = true
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "goeat_video_complete", {
+        event_category: "engagement",
+        event_label: "goeat_16x9",
+      })
+    }
+    if (typeof window.fbq === "function") {
+      window.fbq("trackCustom", "VideoCompleted", {
+        video_id: "goeat-gioi-thieu-16x9",
+      })
+    }
+  }
+
+  return (
+    <section
+      id="video-gioi-thieu"
+      aria-labelledby="video-gioi-thieu-title"
+      className="sysdark:border-[#1F232A] sysdark:bg-[#08090B] relative scroll-mt-24 border-b border-[#E3E7EE] bg-white py-14 lg:py-18"
+    >
+      <RailMarks />
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div className="max-w-2xl">
+            <p className="sysdark:text-[#6EA8FF] font-mono text-xs font-semibold tracking-[0.08em] text-[#1D4ED8] uppercase">
+              Video giới thiệu thực tế · 00:53 · Có thuyết minh
+            </p>
+            <h2
+              id="video-gioi-thieu-title"
+              className="sysdark:text-[#F5F7FA] mt-2 font-medium tracking-[-0.02em] [text-wrap:balance] text-[#0B1220]"
+              style={HEADING_STYLE}
+            >
+              53 giây nắm trọn quy trình kiểm soát suất ăn &amp; căn-tin nhà máy
+            </h2>
+          </div>
+          <p className="sysdark:text-[#8B93A3] flex items-center gap-1.5 text-xs font-medium text-[#5B6475] md:pb-1">
+            <Volume2 className="sysdark:text-[#6EA8FF] h-4 w-4 shrink-0 text-[#1D4ED8]" />
+            Bật loa để nghe thuyết minh từng bước vận hành
+          </p>
+        </div>
+
+        <div className="sysdark:border-[#262B33] relative mt-7 overflow-hidden rounded-xl border border-[#CBD5E1] bg-[#07122B] shadow-[0_32px_70px_-30px_rgba(11,18,32,0.5)]">
+          <video
+            ref={videoRef}
+            src="/videos/goeat-gioi-thieu.mp4"
+            poster="/images/goeat-video-poster.jpg"
+            controls={started}
+            playsInline
+            preload="metadata"
+            onPlay={handlePlay}
+            onTimeUpdate={handleTimeUpdate}
+            onEnded={handleEnded}
+            className="block aspect-video w-full bg-[#07122B] object-contain"
+          >
+            Trình duyệt của bạn không hỗ trợ phát video trực tiếp.
+          </video>
+
+          {!started && (
+            <button
+              type="button"
+              onClick={() => {
+                onStart()
+                videoRef.current?.play().catch(() => {})
+              }}
+              aria-label="Phát video giới thiệu thực tế phần mềm GoEat (53 giây)"
+              className="group absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-t from-[#07122B]/80 via-[#07122B]/25 to-transparent p-4 text-white transition-colors hover:bg-[#07122B]/40"
+            >
+              <span className="flex h-16 w-16 items-center justify-center rounded-full bg-[#2563EB] text-white shadow-[0_12px_32px_rgba(37,99,235,0.55)] ring-4 ring-white/25 transition-transform duration-200 group-hover:scale-105 sm:h-20 sm:w-20">
+                <Play className="ml-1 h-7 w-7 fill-current sm:h-8 sm:w-8" />
+              </span>
+              <span className="mt-3.5 rounded-full bg-[#07122B]/85 px-4 py-1.5 text-xs font-semibold tracking-wide text-[#DBEAFE] ring-1 ring-white/20 backdrop-blur-xs sm:text-sm">
+                Bấm xem video thuyết minh thực tế · 00:53
+              </span>
+            </button>
+          )}
+        </div>
+
+        <div
+          aria-label="Chọn nhanh phân cảnh nghiệp vụ trong video"
+          className="mt-4 flex flex-wrap gap-2"
+        >
+          {VIDEO_CHAPTERS.map((ch, i) => {
+            const active = started && activeChapter === i
+            return (
+              <button
+                key={ch.time}
+                type="button"
+                onClick={() => handleJump(i, ch.sec)}
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
+                  active
+                    ? "sysdark:border-[#3B82F6] sysdark:bg-[#2563EB] border-[#1D4ED8] bg-[#1D4ED8] text-white"
+                    : "sysdark:border-[#262B33] sysdark:bg-[#0E1014] sysdark:text-[#C9CED8] sysdark:hover:border-[#3B82F6] sysdark:hover:text-[#93C5FD] border-[#D3D9E2] bg-white text-[#334155] hover:border-[#1D4ED8] hover:text-[#1D4ED8]"
+                }`}
+              >
+                <span
+                  className={`tnum font-mono text-[11px] ${
+                    active
+                      ? "text-[#DBEAFE]"
+                      : "sysdark:text-[#6EA8FF] text-[#1D4ED8]"
+                  }`}
+                >
+                  {ch.time}
+                </span>
+                <span>{ch.label}</span>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 /* ---------- Trang ---------- */
 
 export function GoEatLandingPage() {
   const [plan, setPlan] = useState<string>("Professional")
   const [showPhone, setShowPhone] = useState(false)
+  const [videoStarted, setVideoStarted] = useState(false)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
+
+  const handleWatchVideo = useCallback(() => {
+    setVideoStarted(true)
+    const secEl = document.getElementById("video-gioi-thieu")
+    secEl?.scrollIntoView({ behavior: "smooth", block: "center" })
+    window.setTimeout(() => {
+      videoRef.current?.play().catch(() => {})
+    }, 320)
+  }, [])
 
   return (
     <div className="sysdark:bg-[#08090B] sysdark:text-[#F5F7FA] sysdark:selection:bg-[#2563EB] min-h-dvh bg-white text-[#0B1220] antialiased selection:bg-[#1D4ED8] selection:text-white">
@@ -432,7 +648,7 @@ export function GoEatLandingPage() {
         >
           <CubeBackdrop />
           <div className="relative mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
-            <ProductHero />
+            <ProductHero onWatchVideo={handleWatchVideo} />
           </div>
         </section>
 
@@ -480,6 +696,12 @@ export function GoEatLandingPage() {
               </ul>
             </div>
           </section>
+
+          <GoEatVideoSection
+            videoRef={videoRef}
+            started={videoStarted}
+            onStart={() => setVideoStarted(true)}
+          />
 
           {/* ---------- Chức năng: một ngày suất ăn theo dòng thời gian ----------
            * Chỉ sơ lược; chi tiết từng chức năng ở trang /chuc-nang. */}

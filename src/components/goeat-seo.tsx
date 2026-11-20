@@ -175,12 +175,72 @@ const faqPage = {
   })),
 }
 
+const productVideo = {
+  "@type": "VideoObject",
+  "@id": `${SITE_URL}/#video-gioi-thieu`,
+  name: "GoEat — 53 giây nắm trọn quy trình quản lý suất ăn công nghiệp & căn-tin nhà máy",
+  description:
+    "Video thuyết minh thực tế phần mềm GoEat cho nhà máy KCN, cơ quan và đơn vị thầu bếp: đặt món cả tuần trên điện thoại, tự khóa sổ báo bếp theo ca, quẹt thẻ nhận cơm chống nhận trùng, cấp thẻ tạm quên thẻ, căn-tin QR và xuất Excel đối soát cuối kỳ.",
+  thumbnailUrl: [`${SITE_URL}/images/goeat-video-poster.jpg`],
+  contentUrl: `${SITE_URL}/videos/goeat-gioi-thieu.mp4`,
+  embedUrl: `${SITE_URL}/#video-gioi-thieu`,
+  uploadDate: "2026-11-20T08:00:00+07:00",
+  duration: "PT53S",
+  inLanguage: "vi",
+  publisher: { "@id": ORG_ID },
+  hasPart: [
+    {
+      "@type": "Clip",
+      name: "Đặt món cả tuần & quản lý đặt thay",
+      startOffset: 0,
+      endOffset: 13,
+      url: `${SITE_URL}/#video-gioi-thieu`,
+    },
+    {
+      "@type": "Clip",
+      name: "Tự khóa sổ & chốt số báo bếp theo ca",
+      startOffset: 13,
+      endOffset: 22,
+      url: `${SITE_URL}/#video-gioi-thieu`,
+    },
+    {
+      "@type": "Clip",
+      name: "Quẹt thẻ nhận cơm & chặn nhận trùng",
+      startOffset: 22,
+      endOffset: 29,
+      url: `${SITE_URL}/#video-gioi-thieu`,
+    },
+    {
+      "@type": "Clip",
+      name: "Cấp thẻ tạm quên thẻ & phát ngoại lệ",
+      startOffset: 29,
+      endOffset: 36,
+      url: `${SITE_URL}/#video-gioi-thieu`,
+    },
+    {
+      "@type": "Clip",
+      name: "Căn-tin QR & đối soát xuất Excel A4",
+      startOffset: 36,
+      endOffset: 44,
+      url: `${SITE_URL}/#video-gioi-thieu`,
+    },
+    {
+      "@type": "Clip",
+      name: "Nhận tài khoản Demo chạy thật 7 ngày",
+      startOffset: 44,
+      endOffset: 53,
+      url: `${SITE_URL}/#video-gioi-thieu`,
+    },
+  ],
+}
+
 export function landingJsonLd() {
   return {
     "@context": "https://schema.org",
     "@graph": [
       organization,
       software,
+      productVideo,
       {
         "@type": "WebPage",
         "@id": `${SITE_URL}/#webpage`,
